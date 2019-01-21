@@ -1,5 +1,6 @@
 .account {
 	border: 1px solid #ccc;
+	border-bottom: 2px solid #ccc;
 	margin-bottom: .33rem;
 	padding: .5rem .5rem;
 }

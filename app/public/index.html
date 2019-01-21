@@ -4,6 +4,7 @@
 	<title>reddcoin wallet</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" href="/assets/bootstrap.min.css" />
+	<link rel="stylesheet" href="/assets/fontawesome/css/all.min.css" />
 	<link rel="stylesheet" href="/node_modules/noty.css" />
 	<link rel="stylesheet" href="/node_modules/themes/light.css" />
 	<link rel="stylesheet" href="/assets/app.css" />
@@ -20,40 +21,89 @@
 	<nav class="navbar navbar-light bg-light mb-3">
 		<a class="navbar-brand" href="/">reddcoin wallet</a>
 		<span class="navbar-text number-{{color}}">
-			{{state}}
+			<i class="fas fa-wifi"></i> {{state}}
 		</span>
 	</nav>
 
-	<div class="container-fluid">
+	<div class="container">
 
 		<div class="account balance">
 			<div class="row">
-				<div class="col-8">
+				<div class="col-7">
 					<span>Balance</span>
 				</div>
-				<div class="col-4 text-right">
+				<div class="col-5 text-right">
 					{{balance}}
 				</div>
 			</div>
 		</div>
 		<div class="account" ng-repeat="(key, value) in accounts">
 			<div class="row">
-				<div class="col-8">
+				<div class="col-7">
 					<span style="font-style: {{key?'normal':'italic'}}">{{key || "Unnamed"}}</span>
 				</div>
-				<div class="col-4 text-right">
+				<div class="col-5 text-right">
 					{{value}}
 				</div>
-				<!--
 				<div class="col-6 mt-2">
-					<button type="button" class="btn btn-secondary btn-sm">Edit Name</button>
+					<!--<button type="button" class="btn btn-secondary btn-sm">Edit Name</button>-->
 				</div>
 				<div class="col-6 mt-2 text-right">
-					<button type="button" class="btn btn-secondary btn-sm">Move</button>
+					<!--<button type="button" class="btn btn-secondary btn-sm">Move</button>-->
 					<button type="button" class="btn btn-success btn-sm">Receive</button>
-					<button type="button" class="btn btn-primary btn-sm">Send</button>
+					<!--<button type="button" class="btn btn-primary btn-sm">Send</button>-->
 				</div>
-				-->
+			</div>
+		</div>
+
+		<div class="account">
+			<div class="row">
+				<div class="col-7">
+					<span>Staking</span>
+				</div>
+				<div class="col-5 text-right">
+					{{staking.staking ? "yes" : "no"}}
+				</div>
+			</div>
+			<div ng-switch="staking.staking">
+
+				<div ng-switch-when="true">
+					<div class="row">
+							<div class="col-7">
+								<span>average weight</span>
+							</div>
+							<div class="col-5 text-right">
+								{{staking.averageweight}}
+							</div>
+							<div class="col-7">
+								<span>total weight</span>
+							</div>
+							<div class="col-5 text-right">
+								{{staking.totalweight}}
+							</div>
+							<div class="col-7">
+								<span>net stake weight</span>
+							</div>
+							<div class="col-5 text-right">
+								{{staking.netstakeweight}}
+							</div>
+							<div class="col-7">
+								<span>expected time</span>
+							</div>
+							<div class="col-5 text-right">
+								{{staking.expectedtime}}
+							</div>
+					</div>
+				</div>
+
+				<div ng-switch-when="false">
+					<div class="row">
+						<div class="col-12">
+							<button type="button" class="btn btn-primary btn-sm w-100">enable staking</button>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 
@@ -64,6 +114,7 @@
 
 	<!-- Angular Material Library -->
 	<script src="/assets/jquery-3.3.1.min.js"></script>
+	<script src="/assets/moment.js"></script>
 	<script src="/node_modules/noty.min.js"></script>
 	<script src="/assets/app.js"></script>
 

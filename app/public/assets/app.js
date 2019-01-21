@@ -23,13 +23,23 @@ app.controller('WalletController', function($scope, $http) {
 		$scope.accounts = response.data.accounts;
 	});
 
+	let stakingLoad = $http.get("/api/getstakinginfo").then(function(response) {
+		console.log(response.data);
+
+		if(response.data.staking.staking) {
+			response.data.staking.expectedtime = moment().add(response.data.staking.expectedtime).fromNow();
+		}
+
+		$scope.staking = response.data.staking;
+	});
+
 	loader.push(pingLoad, balanceLoad, accountsLoad);
 
 	Promise.all(loader).then(() => {
 		$('#loader').fadeOut(150);
 	});
 
-	
+
 
 });
 

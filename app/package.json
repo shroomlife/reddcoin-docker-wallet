@@ -6,7 +6,8 @@
   "dependencies": {
     "@types/node": "^10.12.18",
     "express": "4.16.4",
-    "noty": "3.2.0-beta"
+    "noty": "3.2.0-beta",
+    "moment": "2.23.0"
   },
   "scripts": {
     "start": "npm install && node index",
