@@ -26,6 +26,11 @@ app.controller('WalletController', function($scope, $http) {
 		$scope.accounts = response.data.accounts;
 	});
 
+	let transactionsLoad = $http.get("/api/listtransactions").then(function(response) {
+		console.log(response.data);
+		$scope.transactions = response.data.transactions;
+	});
+
 	let stakingLoad = $http.get("/api/getstakinginfo").then(function(response) {
 		console.log(response.data);
 
@@ -37,7 +42,7 @@ app.controller('WalletController', function($scope, $http) {
 
 	});
 
-	loader.push(pingLoad, balanceLoad, accountsLoad);
+	loader.push(pingLoad, balanceLoad, accountsLoad, transactionsLoad, stakingLoad);
 
 	Promise.all(loader).then(() => {
 		$('#loader').fadeOut(150);

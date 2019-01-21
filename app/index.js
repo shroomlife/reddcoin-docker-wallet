@@ -49,6 +49,16 @@ app.get('/api/getstakinginfo', (req, res) => {
 	});
     
 });
+app.get('/api/listtransactions', (req, res) => {
+
+	reddcoin.cli("listtransactions").then((response) => {
+		response = JSON.parse(response);
+		res.json({
+			"transactions": response
+		});
+	});
+    
+});
 
 app.listen(80, () => {
 	reddcoin.launch();

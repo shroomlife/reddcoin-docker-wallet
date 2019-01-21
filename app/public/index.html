@@ -107,6 +107,24 @@
 			</div>
 		</div>
 
+		<h3>Transactions</h3>
+		<table class="table table-striped">
+				<thead>
+				  <tr>
+					<th scope="col">Account</th>
+					<th scope="col">Amount</th>
+					<th scope="col">Date</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr ng-repeat="transaction in transactions">
+					<td>{{account || "Unnamed"}}</td>
+					<td>{{address}}</td>
+					<td>{{time}}</td>
+				  </tr>
+				</tbody>
+			  </table>
+
 	</div>
 
 	<!-- Angular Material requires Angular.js Libraries -->

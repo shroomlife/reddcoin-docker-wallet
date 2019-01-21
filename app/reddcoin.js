@@ -40,8 +40,6 @@ function execute(command, args = []) {
 
 function ping() {
 
-	console.log("REDDCOIND:", reddcoind);
-
 	return new Promise((resolve, reject) => {
 
 		let execute = spawn('reddcoin-cli', [ 'ping' ]);
