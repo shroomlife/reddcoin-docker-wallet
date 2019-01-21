@@ -8,6 +8,9 @@ app.controller('WalletController', function($scope, $http) {
 	let pingLoad = $http.get("/api/ping").then(function() {
 		$scope.color = "green";
 		$scope.state = 'online';
+
+
+
 	}).catch(function() {
 		$scope.color = "red";
 		$scope.state = 'offline';
@@ -27,10 +30,11 @@ app.controller('WalletController', function($scope, $http) {
 		console.log(response.data);
 
 		if(response.data.staking.staking) {
-			response.data.staking.expectedtime = moment().add(response.data.staking.expectedtime).fromNow();
+			response.data.staking.expectedtime = moment().add(response.data.staking.expectedtime * 1000).fromNow();
 		}
 
 		$scope.staking = response.data.staking;
+
 	});
 
 	loader.push(pingLoad, balanceLoad, accountsLoad);
