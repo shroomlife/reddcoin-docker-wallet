@@ -1,0 +1,15 @@
+version: '3.6'
+services:
+  rdd001:
+    container_name: rdd001
+    image: reddcoin-node:latest
+    restart: always
+    build: .
+    networks:
+      - default
+    volumes:
+      - "/usr/reddcoin:/root/.reddcoin"
+networks:
+  default:
+    external:
+      name: shroom001

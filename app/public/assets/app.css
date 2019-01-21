@@ -1,0 +1,34 @@
+.account {
+	border: 1px solid #ccc;
+	margin-bottom: .33rem;
+	padding: .5rem .5rem;
+}
+
+.number-red {
+	color: red !important;
+}
+
+.number-green {
+	color: green !important;
+}
+
+#loader {
+	display: flex;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 101;
+	background-color: white;
+	align-content: center;
+	justify-content: center;
+}
+
+#loader img {
+	width: 25vw;
+}
+
+.account.balance {
+	font-weight: bold;
+}

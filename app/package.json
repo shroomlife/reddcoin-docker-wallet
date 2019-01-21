@@ -1,0 +1,17 @@
+{
+  "name": "reddcoin-node",
+  "version": "0.1.0",
+  "description": "a reddcoin node with api features",
+  "main": "index.js",
+  "dependencies": {
+    "@types/node": "^10.12.18",
+    "express": "4.16.4",
+    "noty": "3.2.0-beta"
+  },
+  "scripts": {
+    "start": "npm install && node index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "shroomlife",
+  "license": "GPL-3.0-or-later"
+}

@@ -1,0 +1,72 @@
+<html lang="en" ng-app="WalletApp">
+
+<head>
+	<title>reddcoin wallet</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/assets/bootstrap.min.css" />
+	<link rel="stylesheet" href="/node_modules/noty.css" />
+	<link rel="stylesheet" href="/node_modules/themes/light.css" />
+	<link rel="stylesheet" href="/assets/app.css" />
+
+</head>
+
+<body ng-controller="WalletController">
+
+	<div id="loader">
+		<img src="/assets/logo.svg" />
+	</div>
+
+	<!-- As a link -->
+	<nav class="navbar navbar-light bg-light mb-3">
+		<a class="navbar-brand" href="/">reddcoin wallet</a>
+		<span class="navbar-text number-{{color}}">
+			{{state}}
+		</span>
+	</nav>
+
+	<div class="container-fluid">
+
+		<div class="account balance">
+			<div class="row">
+				<div class="col-8">
+					<span>Balance</span>
+				</div>
+				<div class="col-4 text-right">
+					{{balance}}
+				</div>
+			</div>
+		</div>
+		<div class="account" ng-repeat="(key, value) in accounts">
+			<div class="row">
+				<div class="col-8">
+					<span style="font-style: {{key?'normal':'italic'}}">{{key || "Unnamed"}}</span>
+				</div>
+				<div class="col-4 text-right">
+					{{value}}
+				</div>
+				<!--
+				<div class="col-6 mt-2">
+					<button type="button" class="btn btn-secondary btn-sm">Edit Name</button>
+				</div>
+				<div class="col-6 mt-2 text-right">
+					<button type="button" class="btn btn-secondary btn-sm">Move</button>
+					<button type="button" class="btn btn-success btn-sm">Receive</button>
+					<button type="button" class="btn btn-primary btn-sm">Send</button>
+				</div>
+				-->
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Angular Material requires Angular.js Libraries -->
+	<script src="/assets/angular.min.js"></script>
+
+	<!-- Angular Material Library -->
+	<script src="/assets/jquery-3.3.1.min.js"></script>
+	<script src="/node_modules/noty.min.js"></script>
+	<script src="/assets/app.js"></script>
+
+</body>
+
+</html>
