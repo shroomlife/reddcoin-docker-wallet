@@ -13,51 +13,48 @@ app.use('/node_modules', notyStatic);
 app.get('/api/ping', (req, res) => {
 
 	reddcoin.ping().then(() => {
-		res.sendStatus(200);
+		res.status(200).send(null);
 	}).catch(() => {
 		res.sendStatus(503);
 	});
 
 });
 
-app.get('/api/getbalance', (req, res) => {
+app.get('/api/home', (req, res) => {
 
-	reddcoin.cli("getbalance").then((response) => {
+	let commands = [
+		reddcoin.cli("getbalance", false),
+		reddcoin.cli("listaccounts"),
+		reddcoin.cli("getstakinginfo"),
+		reddcoin.cli("listtransactions"),
+		reddcoin.cli("getblockchaininfo")
+	];
+
+	Promise.all(commands).then(([balance, accounts, staking, transactions, blockchain]) => {
+
+		if(blockchain.verificationprogress < 0.99) {
+			blockchain.indexing = true;
+		}
+
 		res.json({
-			"balance": response
+			"balance": balance,
+			"accounts": accounts,
+			"staking": staking,
+			"transactions": transactions,
+			"blockchain": blockchain
 		});
+
+	}).catch((error) => {
+		console.log('promise queue error', error);
+		res.sendStatus(503);
 	});
-    
+
 });
-app.get('/api/listaccounts', (req, res) => {
 
-	reddcoin.cli("listaccounts").then((response) => {
-		response = JSON.parse(response);
-		res.json({
-			"accounts": response
-		});
-	});
-    
-});
-app.get('/api/getstakinginfo', (req, res) => {
+app.get('/api/blockchain/state', (req, res) => {
 
-	reddcoin.cli("getstakinginfo").then((response) => {
-		response = JSON.parse(response);
-		res.json({
-			"staking": response
-		});
-	});
-    
-});
-app.get('/api/listtransactions', (req, res) => {
 
-	reddcoin.cli("listtransactions").then((response) => {
-		response = JSON.parse(response);
-		res.json({
-			"transactions": response
-		});
-	});
-    
+
 });
 
 app.listen(80, () => {

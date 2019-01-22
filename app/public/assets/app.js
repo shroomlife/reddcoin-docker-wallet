@@ -2,41 +2,44 @@ var app = angular.module('WalletApp', []);
 
 app.controller('WalletController', function($scope, $http) {
 
-	let balance = 0;
+	$scope.Math = window.Math;
 
-	$http.get("/api/ping").then(function() {
-		$scope.color = "green";
-		$scope.state = 'online';
-	}).catch(function() {
-		$scope.color = "red";
-		$scope.state = 'offline';
-	});
+	$scope.ping = function() {
 
-	$http.get("/api/getbalance").then(function(response) {
-		console.log(response.data);
-		$scope.balance = response.data.balance;
-	});
+		$http.get("/api/ping").then(function() {
+			$scope.color = "green";
+			$scope.state = 'online';
+		}).catch(function() {
+			$scope.color = "red";
+			$scope.state = 'offline';
+		});
 
-	$http.get("/api/listaccounts").then(function(response) {
-		console.log(response.data);
-		$scope.accounts = response.data.accounts;
-	});
+	}
 
-	$http.get("/api/listtransactions").then(function(response) {
-		console.log(response.data);
-		$scope.transactions = response.data.transactions;
-	});
+	$scope.reload = function() {
 
-	$http.get("/api/getstakinginfo").then(function(response) {
-		console.log(response.data);
+		console.log('starting to reload!!!');
 
-		if(response.data.staking.staking) {
-			response.data.staking.expectedtime = moment().add(response.data.staking.expectedtime * 1000).fromNow();
-		}
+		$http.get("/api/home").then(function(response) {
 
-		$scope.staking = response.data.staking;
+			let data = response.data;
 
-	});
+			if(response.data.staking.staking) {
+				response.data.staking.expectedtime = moment().add(response.data.staking.expectedtime * 1000).fromNow();
+			}
+			
+			$scope.balance = data.balance;
+			$scope.accounts = data.accounts;
+			$scope.staking = data.staking;
+			$scope.transactions = data.transactions;
+			$scope.blockchain = data.blockchain;
+
+		});
+
+	}
+
+	$scope.ping();
+	$scope.reload();
 
 });
 

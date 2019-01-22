@@ -19,10 +19,27 @@
 		<span class="navbar-text number-{{color}}">
 			<i class="fas fa-wifi"></i> {{state}}
 		</span>
+		<span class="navbar-text">
+			<button type="button" class="btn btn-secondary btn-sm" ng-click="reload()">
+				<i class="fas fa-redo-alt"></i>
+			</button>
+		</span>
 	</nav>
 
 	<div class="container">
 
+		<div ng-switch="blockchain.indexing">
+			<div ng-switch-when="true">
+				<h4>Indexing</h4>
+				<div class="blockchain mb-3">
+					<div class="progress">
+						<div class="progress-bar" role="progressbar" style="width: {{Math.round((blockchain.verificationprogress * 10000))/100}}%">{{Math.round((blockchain.verificationprogress * 10000))/100}} %</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<h4>Accounts</h4>
 		<div class="account balance">
 			<div class="row">
 				<div class="col-7">
@@ -46,12 +63,13 @@
 				</div>
 				<div class="col-6 mt-2 text-right">
 					<!--<button type="button" class="btn btn-secondary btn-sm">Move</button>-->
-					<button type="button" class="btn btn-success btn-sm">Receive</button>
+					<!--<button type="button" class="btn btn-success btn-sm">Receive</button>-->
 					<!--<button type="button" class="btn btn-primary btn-sm">Send</button>-->
 				</div>
 			</div>
 		</div>
 
+		<h4>Staking</h4>
 		<div class="account">
 			<div class="row font-weight-bold">
 				<div class="col-7">
@@ -65,30 +83,30 @@
 
 				<div ng-switch-when="true">
 					<div class="row">
-							<div class="col-7">
-								<span>average weight</span>
-							</div>
-							<div class="col-5 text-right">
-								{{staking.averageweight}}
-							</div>
-							<div class="col-7">
-								<span>total weight</span>
-							</div>
-							<div class="col-5 text-right">
-								{{staking.totalweight}}
-							</div>
-							<div class="col-7">
-								<span>net stake weight</span>
-							</div>
-							<div class="col-5 text-right">
-								{{staking.netstakeweight}}
-							</div>
-							<div class="col-7">
-								<span>expected time</span>
-							</div>
-							<div class="col-5 text-right">
-								{{staking.expectedtime}}
-							</div>
+						<div class="col-7">
+							<span>average weight</span>
+						</div>
+						<div class="col-5 text-right">
+							{{staking.averageweight}}
+						</div>
+						<div class="col-7">
+							<span>total weight</span>
+						</div>
+						<div class="col-5 text-right">
+							{{staking.totalweight}}
+						</div>
+						<div class="col-7">
+							<span>net stake weight</span>
+						</div>
+						<div class="col-5 text-right">
+							{{staking.netstakeweight}}
+						</div>
+						<div class="col-7">
+							<span>expected time</span>
+						</div>
+						<div class="col-5 text-right">
+							{{moment().add(staking.expectedtime * 1000).fromNow()}}
+						</div>
 					</div>
 				</div>
 
@@ -103,23 +121,23 @@
 			</div>
 		</div>
 
-		<h3>Transactions</h3>
+		<h4>Transactions</h4>
 		<table class="table table-striped">
-				<thead>
-				  <tr>
+			<thead>
+				<tr>
 					<th scope="col">Account</th>
 					<th scope="col">Amount</th>
 					<th scope="col">Date</th>
-				  </tr>
-				</thead>
-				<tbody>
-				  <tr ng-repeat="transaction in transactions">
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="transaction in transactions">
 					<td>{{transaction.account}}</td>
 					<td>{{transaction.amount}}</td>
 					<td>{{transaction.time}}</td>
-				  </tr>
-				</tbody>
-			  </table>
+				</tr>
+			</tbody>
+		</table>
 
 	</div>
 

@@ -2,36 +2,38 @@ const { spawn } = require('child_process');
 
 let reddcoind = null;
 
-function execute(command, args = []) {
+function execute(command, json = true, args = []) {
 
 	args.unshift(command);
 
 	return new Promise((resolve, reject) => {
 
-		ping().then(() => {
+		let data = "";
+		let execute = spawn('reddcoin-cli', args);
 
-			let data = "";
-			let execute = spawn('reddcoin-cli', args);
-
-			execute.stderr.on('data', () => {
-                reject(false);
-            });
-			execute.stdout.on('data', (response) => {
-
-				if(Buffer.isBuffer(response)) {
-					data = response.toString();
-				} else {
-					data = response;
-				}
-				
-			});
-			execute.on('exit', () => {
-				data = data.trim();
-				resolve(data);
-			});
-
-		}).catch(() => {
+		execute.stderr.on('data', () => {
 			reject(false);
+		});
+		execute.stdout.on('data', (response) => {
+
+			if(Buffer.isBuffer(response)) {
+				data = response.toString();
+			} else {
+				data = response;
+			}
+			
+		});
+		execute.on('exit', () => {
+			data = data.trim();
+
+			if(json) {
+				try {
+					data = JSON.parse(data);
+				} catch(error) {}
+			}
+
+			resolve(data);
+
 		});
 
 	});
