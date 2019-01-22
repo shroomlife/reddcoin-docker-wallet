@@ -13,10 +13,6 @@
 
 <body ng-controller="WalletController">
 
-	<div id="loader">
-		<img src="/assets/logo.svg" />
-	</div>
-
 	<!-- As a link -->
 	<nav class="navbar navbar-light bg-light mb-3">
 		<a class="navbar-brand" href="/">reddcoin wallet</a>
@@ -57,7 +53,7 @@
 		</div>
 
 		<div class="account">
-			<div class="row">
+			<div class="row font-weight-bold">
 				<div class="col-7">
 					<span>Staking</span>
 				</div>
@@ -118,9 +114,9 @@
 				</thead>
 				<tbody>
 				  <tr ng-repeat="transaction in transactions">
-					<td>{{account || "Unnamed"}}</td>
-					<td>{{amount}}</td>
-					<td>{{time}}</td>
+					<td>{{transaction.account}}</td>
+					<td>{{transaction.amount}}</td>
+					<td>{{transaction.time}}</td>
 				  </tr>
 				</tbody>
 			  </table>
