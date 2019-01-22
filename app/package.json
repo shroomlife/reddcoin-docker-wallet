@@ -5,10 +5,11 @@
   "main": "index.js",
   "dependencies": {
     "@types/node": "^10.12.18",
+    "body-parser": "1.18.3",
     "express": "4.16.4",
-    "noty": "3.2.0-beta",
     "moment": "2.23.0",
-    "sweetalert": "2.1.2"
+    "noty": "3.2.0-beta",
+    "sweetalert2": "8.0.1"
   },
   "scripts": {
     "start": "npm install && node index",

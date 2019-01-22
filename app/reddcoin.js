@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 
 let reddcoind = null;
 
-function execute(command, json = true, args = []) {
+function execute(command, json = true, args = [], bool = false) {
 
 	args.unshift(command);
 
@@ -11,28 +11,45 @@ function execute(command, json = true, args = []) {
 		let data = "";
 		let execute = spawn('reddcoin-cli', args);
 
-		execute.stderr.on('data', () => {
+		execute.stderr.on('data', (error) => {
+			console.log("error data", String(error));
 			reject(false);
 		});
 		execute.stdout.on('data', (response) => {
 
-			if(Buffer.isBuffer(response)) {
-				data = response.toString();
+			if(bool) {
+				resolve(false);
 			} else {
-				data = response;
+
+				if(Buffer.isBuffer(response)) {
+					data = response.toString();
+				} else {
+					data = response;
+				}
+
 			}
+
 			
 		});
 		execute.on('exit', () => {
-			data = data.trim();
 
-			if(json) {
-				try {
-					data = JSON.parse(data);
-				} catch(error) {}
+			if(bool) {
+				resolve(true);
+			} else {
+
+				data = data.trim();
+
+				if(json) {
+					try {
+						data = JSON.parse(data);
+					} catch(error) {}
+				}
+	
+				resolve(data);
+
 			}
 
-			resolve(data);
+			
 
 		});
 

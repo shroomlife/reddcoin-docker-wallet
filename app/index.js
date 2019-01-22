@@ -1,14 +1,18 @@
 const { spawn } = require('child_process');
 
 const express = require("express");
+
+var bodyParser = require('body-parser')
 const reddcoin = require("./reddcoin");
 const app = express();
 
 let static = express.static(`${__dirname}/public`);
 let notyStatic = express.static(`${__dirname}/node_modules/noty/lib`);
+let swalStatic = express.static(`${__dirname}/node_modules/sweetalert2/dist`);
 
 app.use(static);
-app.use('/node_modules', notyStatic);
+app.use('/ext', notyStatic);
+app.use('/ext', swalStatic);
 
 app.get('/api/ping', (req, res) => {
 
@@ -51,9 +55,35 @@ app.get('/api/home', (req, res) => {
 
 });
 
-app.get('/api/blockchain/state', (req, res) => {
+app.use(bodyParser.json());
+app.post('/api/enable-staking', (req, res) => {
 
+	let password = req.body.password;
 
+	console.log(`password: ${password}`);
+	reddcoin.cli("walletpassphrase", false, [password, (60*60*24*30), false], true).then((check) => {
+
+		console.log(check);
+
+		if(check) {
+
+			setTimeout(() => {
+
+				reddcoin.cli("getstakinginfo").then((response) => {
+					res.json(response);
+				});
+
+			}, 1000);
+
+		} else {
+			res.json({
+				"error": true
+			});
+		}
+
+	});
+
+	
 
 });
 

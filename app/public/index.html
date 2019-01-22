@@ -5,8 +5,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" href="/assets/bootstrap.min.css" />
 	<link rel="stylesheet" href="/assets/fontawesome/css/all.min.css" />
-	<link rel="stylesheet" href="/node_modules/noty.css" />
-	<link rel="stylesheet" href="/node_modules/themes/light.css" />
+	<link rel="stylesheet" href="/ext/noty.css" />
+	<link rel="stylesheet" href="/ext/themes/light.css" />
+	<link rel="stylesheet" href="/ext/sweetalert2.min.css" />
 	<link rel="stylesheet" href="/assets/app.css" />
 
 </head>
@@ -20,7 +21,7 @@
 			<i class="fas fa-wifi"></i> {{state}}
 		</span>
 		<span class="navbar-text">
-			<button type="button" class="btn btn-secondary btn-sm" ng-click="reload()">
+			<button id="reloadButton" type="button" class="btn btn-secondary btn-sm" ng-click="reload()">
 				<i class="fas fa-redo-alt"></i>
 			</button>
 		</span>
@@ -113,7 +114,7 @@
 				<div ng-switch-when="false">
 					<div class="row">
 						<div class="col-12">
-							<button type="button" class="btn btn-primary btn-sm w-100">enable staking</button>
+							<button type="button" class="btn btn-primary btn-sm w-100" ng-click="enableStaking()">enable staking</button>
 						</div>
 					</div>
 				</div>
@@ -147,7 +148,8 @@
 	<!-- Angular Material Library -->
 	<script src="/assets/jquery-3.3.1.min.js"></script>
 	<script src="/assets/moment.js"></script>
-	<script src="/node_modules/noty.min.js"></script>
+	<script src="/ext/noty.min.js"></script>
+	<script src="/ext/sweetalert2.all.min.js"></script>
 	<script src="/assets/app.js"></script>
 
 </body>

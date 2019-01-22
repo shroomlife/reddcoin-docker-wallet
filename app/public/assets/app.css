@@ -33,3 +33,7 @@
 .account.balance {
 	font-weight: bold;
 }
+
+.progress-bar {
+	background-color: #e30613;
+}
