@@ -78,7 +78,7 @@ app.controller('WalletController', function ($scope, $http) {
 	};
 
 	$scope.fillTransactions = function() {
-		
+
 	};
 
 	$scope.load();
@@ -87,6 +87,7 @@ app.controller('WalletController', function ($scope, $http) {
 
 function showNoty(text) {
 	new Noty({
+		"theme": "nest",
 		"text": text,
 	}).show();
 }
