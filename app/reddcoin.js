@@ -15,6 +15,7 @@ function execute(command, json = true, args = [], bool = false) {
 			console.log("error data", String(error));
 			reject(false);
 		});
+
 		execute.stdout.on('data', (response) => {
 
 			if(bool) {
@@ -22,9 +23,9 @@ function execute(command, json = true, args = [], bool = false) {
 			} else {
 
 				if(Buffer.isBuffer(response)) {
-					data = response.toString();
+					data += response.toString();
 				} else {
-					data = response;
+					data += response;
 				}
 
 			}
