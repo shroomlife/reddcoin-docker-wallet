@@ -123,24 +123,27 @@
 		</div>
 
 		<h4>Transactions</h4>
-		<table class="table table-striped table-responsive">
-			<thead>
-				<tr>
-					<th scope="col">Transaction</th>
-					<th scope="col">Amount</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="transaction in transactions | orderBy:'time':true">
-					<td>
-						{{transaction.address}} <span class="badge badge-primary">{{transaction.category}}</span>
-						<br />
-						<small title="{{moment(transaction.time * 1000).format('MMMM Do YYYY, h:mm:ss a')}}">{{moment(transaction.time * 1000).fromNow()}}</small>
-					</td>
-					<td class="text-right">{{transaction.amount>0?"+":"-"}}{{transaction.amount}} RDD</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="table-responsive">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col">Transaction</th>
+						<th scope="col">Amount</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="transaction in transactions | orderBy:'time':true">
+						<td>
+							{{transaction.address}} <span class="badge badge-primary">{{transaction.category}}</span>
+							<br />
+							<small title="{{moment(transaction.time * 1000).format('MMMM Do YYYY, h:mm:ss a')}}">{{moment(transaction.time * 1000).fromNow()}}</small>
+						</td>
+						<td class="text-right">{{transaction.amount>0?"+":"-"}}{{transaction.amount}} RDD</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
 		<button type="button" class="btn btn-primary w-100" ng-click="fillTransactions()">load more</button>
 
 		<div class="row">
