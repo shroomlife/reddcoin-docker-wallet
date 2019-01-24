@@ -146,7 +146,7 @@
 
 		<button type="button" class="btn btn-primary w-100" ng-click="fillTransactions()">load more</button>
 
-		<div class="row">
+		<div class="row" ng-if="lastUpdated">
 			<div class="col-12 text-monospace text-center">
 				last updated {{lastUpdated.fromNow()}}
 			</div>
