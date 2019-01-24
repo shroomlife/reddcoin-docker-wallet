@@ -7,23 +7,14 @@ app.controller('WalletController', function ($scope, $http) {
 	$scope.Math = window.Math;
 	$scope.moment = moment;
 
-	$scope.ping = function () {
-
-		$http.get("/api/ping").then(function () {
-			$scope.color = "green";
-			$scope.state = 'online';
-		}).catch(function () {
-			$scope.color = "red";
-			$scope.state = 'offline';
-		});
-
-	};
-
 	$scope.reload = function () {
 
 		reloadButton.attr("disabled", true);
 
 		$http.get("/api/home").then(function (response) {
+
+			$scope.color = "green";
+			$scope.state = 'online';
 
 			let data = response.data;
 
@@ -36,6 +27,8 @@ app.controller('WalletController', function ($scope, $http) {
 			reloadButton.attr("disabled", false);
 
 		}).catch(function() {
+			$scope.color = "red";
+			$scope.state = 'offline';
 			reloadButton.attr("disabled", false);
 		});
 
