@@ -4,14 +4,15 @@ app.controller('WalletController', function ($scope, $http) {
 
 	let reloadButton = $("#reloadButton");
 
+	$scope.loading = false;
 	$scope.Math = window.Math;
 	$scope.numeral = window.numeral;
 	$scope.moment = moment;
-	$scope.transactionsCount = 0;
+	$scope.transactions = [];
 
 	$scope.load = function () {
 
-		reloadButton.attr("disabled", true);
+		$scope.loading = true;
 
 		$http.get("/api/home").then(function (response) {
 
@@ -22,13 +23,15 @@ app.controller('WalletController', function ($scope, $http) {
 			$scope.balance = data.balance;
 			$scope.accounts = data.accounts;
 			$scope.staking = data.staking;
-			$scope.transactions = data.transactions || [];
+
+			if($scope.transactions.length < 10) {
+				$scope.transactions = data.transactions;
+			}
+
 			$scope.blockchain = data.blockchain;
 			$scope.prices = data.prices;
 
-			$scope.transactionsCount = data.transactions.length;
-
-			reloadButton.attr("disabled", false);
+			$scope.loading = false;
 			$scope.lastUpdated = moment();
 
 		}).catch(function(error) {
@@ -36,7 +39,7 @@ app.controller('WalletController', function ($scope, $http) {
 			showNoty("there was an error fetching data from server...", "alert");
 
 			$scope.state = 'offline';
-			reloadButton.attr("disabled", false);
+			$scope.loading = false;
 
 		});
 
@@ -74,8 +77,6 @@ app.controller('WalletController', function ($scope, $http) {
 
 				});
 
-			} else {
-				Swal.fire("staking", "you need to enter a password ...", "error");
 			}
 
 		});
@@ -84,30 +85,35 @@ app.controller('WalletController', function ($scope, $http) {
 
 	$scope.fillTransactions = function() {
 
-		console.log('fillTransactions', $scope.transactionsCount);
-		console.log('fillTransactions', "/api/gettransactions/" + $scope.transactionsCount);
-		$http.get("/api/gettransactions/" + $scope.transactionsCount).then(function (response) {
+		$scope.loading = true;
+		$http.get("/api/gettransactions/" + $scope.transactions.length).then(function (response) {
 
 			let transactions = response.data;
 
 			console.log('fillTransactions', transactions);
 			if(transactions.length) {
 				$scope.transactions = $scope.transactions.concat(transactions);
-				$scope.transactionsCount += transactions.length;
 			}
 
 			if(transactions.length < 10) {
 				$scope.allTransactionsShown = true;
 			}
 
+			$scope.loading = false;
+
 		}).catch(function(error) {
 			console.log(error);
 			showNoty("there was an error fetching data from server...", "alert");
+			$scope.loading = false;
 		});
 
 	};
 
 	$scope.load();
+
+	setInterval(function() {
+		$scope.$apply();
+	}, 5000);
 
 });
 

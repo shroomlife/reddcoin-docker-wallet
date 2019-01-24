@@ -20,7 +20,6 @@ function execute(command, json = true, args = [], bool = false) {
 
 		execute.stdout.on('data', (response) => {
 
-			console.log("DATA", args, String(response));
 			if(bool) {
 				resolve(false);
 			} else {

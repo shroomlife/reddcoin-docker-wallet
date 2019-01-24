@@ -14,24 +14,22 @@
 
 <body ng-controller="WalletController">
 
-	<!-- As a link -->
-	<nav class="navbar navbar-light bg-light mb-3">
-		<a class="navbar-brand" href="/">reddcoin wallet</a>
-		<span class="navbar-text number-{{state=='online'?'green':'red'}}">
-			<i class="fas fa-wifi"></i> {{state}}
-		</span>
-		<span class="navbar-text">
-			<button id="reloadButton" type="button" class="btn btn-secondary btn-sm" ng-click="load()">
-				<i class="fas fa-redo-alt"></i>
-			</button>
-		</span>
-	</nav>
-
 	<div class="container">
 
-		<div class="row" ng-if="prices">
+		<!-- As a link -->
+		<nav class="navbar navbar-light bg-light mb-3">
+			<a class="navbar-brand" href="/">reddcoin wallet</a>
+			<span class="navbar-text number-{{state=='online'?'green':'red'}}">
+				<i class="fas fa-wifi"></i> {{state}}
+			</span>
+			<span class="navbar-text">
+				<button id="reloadButton" type="button" class="btn btn-secondary btn-sm" ng-click="load()" ng-if="!loading">
+					<i class="fas fa-redo-alt"></i>
+				</button>
+			</span>
+		</nav>
 
-			<div class="col-12">
+			<div class="col-12" ng-if="prices">
 
 				<div class="row reddcoin-price d-flex align-items-center">
 
@@ -47,14 +45,12 @@
 						<div class="col-12 col-md-4 text-center text-md-right">
 							Volume (24hr/EUR): {{numeral(prices.data.RDD.quote.EUR.volume_24h).format('0.0,0')}} &euro;<br />
 							Price (EUR): {{numeral(prices.data.RDD.quote.EUR.price).format('0.0,000')}} &euro; <span class="number-{{prices.data.RDD.quote.EUR.percent_change_24h>0?'green':'red'}}">({{numeral(prices.data.RDD.quote.EUR.percent_change_24h/100).format('0.00%')}} <i class="fas fa-arrow-{{prices.data.RDD.quote.EUR.percent_change_24h>0?'up':'down'}}"></i>)</span><br />
-							<strong>Balance (EUR): {{prices.data.RDD.quote.EUR.price * balance}} &euro;</strong>
+							<strong>Balance (EUR): {{numeral(prices.data.RDD.quote.EUR.price * balance).format('0.0,0')}} &euro;</strong>
 						</div>
 
 				</div>
 
 			</div>
-
-		</div>
 
 		<section>
 			<div class="row" ng-if="blockchain.indexing">
@@ -173,7 +169,7 @@
 					<thead>
 						<tr>
 							<th scope="col">Transaction</th>
-							<th scope="col">Amount</th>
+							<th scope="col" class="text-right">Amount</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -184,13 +180,13 @@
 								<span class="badge badge-danger" ng-if="transaction.category=='send'">{{transaction.category}}</span>
 								<span class="badge badge-success" ng-if="transaction.category=='receive'">{{transaction.category}}</span>
 								<br />
-								<small title="{{moment(transaction.time * 1000).format('MMMM Do YYYY, h:mm:ss a')}}">{{moment(transaction.time * 1000).fromNow()}}</small>
+								<small>{{moment(transaction.time * 1000)}} ({{moment(transaction.time * 1000).fromNow()}})</small>
 							</td>
 							<td ng-if="!transaction.address">
 								{{transaction.account || "Unnamed"}} <i class="fas fa-chevron-right"></i> {{transaction.otheraccount || "Unnamed"}}
 								<span class="badge badge-secondary" ng-if="transaction.category=='move'">{{transaction.category}}</span>
 								<br />
-								<small title="{{moment(transaction.time * 1000).format('MMMM Do YYYY, h:mm:ss a')}}">{{moment(transaction.time * 1000).fromNow()}}</small>
+								<small>{{moment(transaction.time * 1000)}} ({{moment(transaction.time * 1000).fromNow()}})</small>
 							</td>
 							<td class="text-right number-{{transaction.amount>0?'green':'red'}}">{{transaction.amount}} RDD</td>
 						</tr>
@@ -209,6 +205,14 @@
 		</div>
 
 	</div>
+
+	<footer>
+		<div class="row">
+			<div class="col-12 text-center">
+				redd.watch
+			</div>
+		</div>
+	</footer>
 
 	<!-- Angular Material requires Angular.js Libraries -->
 	<script src="/assets/angular.min.js"></script>

@@ -30,7 +30,7 @@ app.get('/api/home', (req, res) => {
 		reddcoin.cli("getbalance", false),
 		reddcoin.cli("listaccounts"),
 		reddcoin.cli("getstakinginfo"),
-		reddcoin.cli("listtransactions", true, ['*', 5, 0]),
+		reddcoin.cli("listtransactions"),
 		reddcoin.cli("getblockchaininfo"),
 		reddcoin.getPrices()
 	];
