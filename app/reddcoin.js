@@ -11,6 +11,7 @@ function execute(command, json = true, args = [], bool = false) {
 
 		let data = "";
 		let execute = spawn('reddcoin-cli', args);
+		console.log('reddcoin-cli', args);
 
 		execute.stderr.on('data', (error) => {
 			console.log("error data", String(error));
@@ -19,6 +20,7 @@ function execute(command, json = true, args = [], bool = false) {
 
 		execute.stdout.on('data', (response) => {
 
+			console.log("DATA", args, String(response));
 			if(bool) {
 				resolve(false);
 			} else {

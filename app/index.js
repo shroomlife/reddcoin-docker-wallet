@@ -30,7 +30,7 @@ app.get('/api/home', (req, res) => {
 		reddcoin.cli("getbalance", false),
 		reddcoin.cli("listaccounts"),
 		reddcoin.cli("getstakinginfo"),
-		reddcoin.cli("listtransactions"),
+		reddcoin.cli("listtransactions", true, ['*', 5, 0]),
 		reddcoin.cli("getblockchaininfo"),
 		reddcoin.getPrices()
 	];
@@ -59,9 +59,11 @@ app.get('/api/home', (req, res) => {
 
 app.get('/api/gettransactions/:from', (req, res) => {
 
-	let from = req.params.from;
+	let from = Number(req.params.from);
 
-	reddcoin.cli("listtransactions", true, ['"*"', 10, from]).then((transactions) => {
+	console.log("listtransactions", true, ['*', 10, from]);
+
+	reddcoin.cli("listtransactions", true, ['*', 10, from]).then((transactions) => {
 		res.json(transactions);
 	}).catch((error) => {
 		console.log('promise queue error', error);

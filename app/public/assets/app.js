@@ -84,15 +84,24 @@ app.controller('WalletController', function ($scope, $http) {
 
 	$scope.fillTransactions = function() {
 
-		$http.get("/api/gettransactions/" + $scope.transactionsCount).then(function (transactions) {
+		console.log('fillTransactions', $scope.transactionsCount);
+		console.log('fillTransactions', "/api/gettransactions/" + $scope.transactionsCount);
+		$http.get("/api/gettransactions/" + $scope.transactionsCount).then(function (response) {
 
+			let transactions = response.data;
+
+			console.log('fillTransactions', transactions);
 			if(transactions.length) {
-				$scope.transactions.concat(transactions);
-			} else {
-				showNoty("no more transactions", "alert");
+				$scope.transactions = $scope.transactions.concat(transactions);
+				$scope.transactionsCount += transactions.length;
+			}
+
+			if(transactions.length < 10) {
+				$scope.allTransactionsShown = true;
 			}
 
 		}).catch(function(error) {
+			console.log(error);
 			showNoty("there was an error fetching data from server...", "alert");
 		});
 

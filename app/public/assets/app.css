@@ -23,4 +23,10 @@
 
 .reddcoin-price {
 	padding: 1rem 1.33rem;
+	margin-bottom: 1rem;
+	border: 1px solid #eee;
+}
+
+section {
+	margin-bottom: 1rem;
 }

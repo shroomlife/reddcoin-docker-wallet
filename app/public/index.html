@@ -56,133 +56,151 @@
 
 		</div>
 
-		<div class="row" ng-if="blockchain.indexing">
-			<div class="col-12">
-				<h4>Indexing</h4>
-				<div class="blockchain mb-3">
-					<div class="progress">
-						<div class="progress-bar" role="progressbar" style="width: {{Math.round((blockchain.verificationprogress * 10000))/100}}%">{{Math.round((blockchain.verificationprogress * 10000))/100}} %</div>
+		<section>
+			<div class="row" ng-if="blockchain.indexing">
+				<div class="col-12">
+					<h4>Indexing</h4>
+					<div class="blockchain mb-3">
+						<div class="progress">
+							<div class="progress-bar" role="progressbar" style="width: {{Math.round((blockchain.verificationprogress * 10000))/100}}%">{{Math.round((blockchain.verificationprogress * 10000))/100}} %</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 		
-		<div class="row mb-2">
-			<div class="col-5">
-				<h4>Accounts</h4>
-			</div>
-			<div class="col-7 text-right">
-					<div class="btn-group" role="group">
-						<a href="https://international.bittrex.com/Market/Index?MarketName=BTC-RDD" class="btn btn-primary" style="background-color: #ff0000; border: 1px solid #f30000;" target="_blank"><i class="fas fa-coins"></i> Buy Reddcoins</a>
-						<button type="button" class="btn btn-success"><i class="fas fa-chevron-circle-down"></i> Receive</button>
-						<button type="button" class="btn btn-primary">Send <i class="fas fa-chevron-circle-up"></i></button>
-					</div>
-				</div>
-		</div>
-		<div class="account balance">
-			<div class="row">
+		<section>
+			<div class="row mb-2">
 				<div class="col-5">
-					<span>Balance</span>
+					<h4>Accounts</h4>
 				</div>
 				<div class="col-7 text-right">
-					{{balance}} RDD
-				</div>
-			</div>
-		</div>
-		<div class="account" ng-repeat="(key, value) in accounts" ng-if="value!=0">
-			<div class="row">
-				<div class="col-5">
-					<span style="font-style: {{key?'normal':'italic'}}">{{key || "Unnamed"}}</span>
-				</div>
-				<div class="col-7 text-right">
-					{{value}} RDD
-				</div>
-				<div class="col-6 mt-2">
-					<!--<button type="button" class="btn btn-secondary btn-sm">Edit Name</button>-->
-				</div>
-				<div class="col-6 mt-2 text-right">
-					<!--<button type="button" class="btn btn-secondary btn-sm">Move</button>-->
-					<!--<button type="button" class="btn btn-success btn-sm">Receive</button>-->
-					<!--<button type="button" class="btn btn-primary btn-sm">Send</button>-->
-				</div>
-			</div>
-		</div>
-
-		<h4>Staking</h4>
-		<div class="account">
-			<div class="row font-weight-bold">
-				<div class="col-7">
-					<span>Staking</span>
-				</div>
-				<div class="col-5 text-right">
-					{{staking.staking ? "yes" : "no"}}
-				</div>
-			</div>
-			<div ng-switch="staking.staking">
-
-				<div ng-switch-when="true">
-					<div class="row">
-						<div class="col-7">
-							<span>average weight</span>
-						</div>
-						<div class="col-5 text-right">
-							{{staking.averageweight}}
-						</div>
-						<div class="col-7">
-							<span>total weight</span>
-						</div>
-						<div class="col-5 text-right">
-							{{staking.totalweight}}
-						</div>
-						<div class="col-7">
-							<span>net stake weight</span>
-						</div>
-						<div class="col-5 text-right">
-							{{staking.netstakeweight}}
-						</div>
-						<div class="col-7">
-							<span>expected time</span>
-						</div>
-						<div class="col-5 text-right">
-							{{moment().add(staking.expectedtime * 1000).fromNow()}}
+						<div class="btn-group" role="group">
+							<a href="https://international.bittrex.com/Market/Index?MarketName=BTC-RDD" class="btn btn-primary" style="background-color: #ff0000; border: 1px solid #f30000;" target="_blank"><i class="fas fa-coins"></i> Buy Reddcoins</a>
+							<button type="button" class="btn btn-success"><i class="fas fa-chevron-circle-down"></i> Receive</button>
+							<button type="button" class="btn btn-primary">Send <i class="fas fa-chevron-circle-up"></i></button>
 						</div>
 					</div>
-				</div>
-
-				<div ng-switch-when="false">
-					<div class="row">
-						<div class="col-12">
-							<button type="button" class="btn btn-primary btn-sm w-100" ng-click="enableStaking()">enable staking</button>
-						</div>
+			</div>
+			<div class="account balance">
+				<div class="row">
+					<div class="col-5">
+						<span>Balance</span>
+					</div>
+					<div class="col-7 text-right">
+						{{balance}} RDD
 					</div>
 				</div>
-
 			</div>
-		</div>
+			<div class="account" ng-repeat="(key, value) in accounts" ng-if="value!=0">
+				<div class="row">
+					<div class="col-5">
+						<span style="font-style: {{key?'normal':'italic'}}">{{key || "Unnamed"}}</span>
+					</div>
+					<div class="col-7 text-right">
+						{{value}} RDD
+					</div>
+					<div class="col-6 mt-2">
+						<!--<button type="button" class="btn btn-secondary btn-sm">Edit Name</button>-->
+					</div>
+					<div class="col-6 mt-2 text-right">
+						<!--<button type="button" class="btn btn-secondary btn-sm">Move</button>-->
+						<!--<button type="button" class="btn btn-success btn-sm">Receive</button>-->
+						<!--<button type="button" class="btn btn-primary btn-sm">Send</button>-->
+					</div>
+				</div>
+			</div>
+		</section>
 
-		<h4>Transactions</h4>
-		<div class="table-responsive">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th scope="col">Transaction</th>
-						<th scope="col">Amount</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="transaction in transactions | orderBy:'time':true">
-						<td>
-							{{transaction.address}} <span class="badge badge-primary">{{transaction.category}}</span>
-							<br />
-							<small title="{{moment(transaction.time * 1000).format('MMMM Do YYYY, h:mm:ss a')}}">{{moment(transaction.time * 1000).fromNow()}}</small>
-						</td>
-						<td class="text-right">{{transaction.amount>0?"+":"-"}}{{transaction.amount}} RDD</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+		<section>
+			<h4>Staking</h4>
+			<div class="account">
+				<div class="row font-weight-bold">
+					<div class="col-7">
+						<span>Staking</span>
+					</div>
+					<div class="col-5 text-right">
+						{{staking.staking ? "yes" : "no"}}
+					</div>
+				</div>
+				<div ng-switch="staking.staking">
 
-		<button id="fillTransactionsButton" type="button" class="btn btn-primary w-100" ng-click="fillTransactions()">load more</button>
+					<div ng-switch-when="true">
+						<div class="row">
+							<div class="col-7">
+								<span>average weight</span>
+							</div>
+							<div class="col-5 text-right">
+								{{staking.averageweight}}
+							</div>
+							<div class="col-7">
+								<span>total weight</span>
+							</div>
+							<div class="col-5 text-right">
+								{{staking.totalweight}}
+							</div>
+							<div class="col-7">
+								<span>net stake weight</span>
+							</div>
+							<div class="col-5 text-right">
+								{{staking.netstakeweight}}
+							</div>
+							<div class="col-7">
+								<span>expected time</span>
+							</div>
+							<div class="col-5 text-right">
+								{{moment().add(staking.expectedtime * 1000).fromNow()}}
+							</div>
+						</div>
+					</div>
+
+					<div ng-switch-when="false">
+						<div class="row">
+							<div class="col-12">
+								<button type="button" class="btn btn-primary btn-sm w-100" ng-click="enableStaking()">enable staking</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<h4>Transactions</h4>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Transaction</th>
+							<th scope="col">Amount</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="transaction in transactions | orderBy:'time':true">
+							<td ng-if="transaction.address">
+								{{transaction.address}}
+								<span class="badge badge-primary" ng-if="transaction.category=='stake'">{{transaction.category}}</span>
+								<span class="badge badge-danger" ng-if="transaction.category=='send'">{{transaction.category}}</span>
+								<span class="badge badge-success" ng-if="transaction.category=='receive'">{{transaction.category}}</span>
+								<br />
+								<small title="{{moment(transaction.time * 1000).format('MMMM Do YYYY, h:mm:ss a')}}">{{moment(transaction.time * 1000).fromNow()}}</small>
+							</td>
+							<td ng-if="!transaction.address">
+								{{transaction.account || "Unnamed"}} <i class="fas fa-chevron-right"></i> {{transaction.otheraccount || "Unnamed"}}
+								<span class="badge badge-secondary" ng-if="transaction.category=='move'">{{transaction.category}}</span>
+								<br />
+								<small title="{{moment(transaction.time * 1000).format('MMMM Do YYYY, h:mm:ss a')}}">{{moment(transaction.time * 1000).fromNow()}}</small>
+							</td>
+							<td class="text-right number-{{transaction.amount>0?'green':'red'}}">{{transaction.amount}} RDD</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<button type="button" class="btn btn-primary w-100" ng-click="fillTransactions()" ng-if="!allTransactionsShown">load more</button>
+
+		</section>
 
 		<div class="row" ng-if="lastUpdated">
 			<div class="col-12 text-monospace text-center">
