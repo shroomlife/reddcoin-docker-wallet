@@ -35,6 +35,8 @@ app.controller('WalletController', function ($scope, $http) {
 
 			reloadButton.attr("disabled", false);
 
+		}).catch(function() {
+			reloadButton.attr("disabled", false);
 		});
 
 	};
@@ -62,10 +64,6 @@ app.controller('WalletController', function ($scope, $http) {
 					if("error" in staking) {
 						Swal.fire("staking", "there was an error", "error");
 					} else {
-
-						if (staking.staking) {
-							staking.expectedtime = moment().add(staking.expectedtime * 1000).fromNow();
-						}
 	
 						$scope.staking = staking;
 

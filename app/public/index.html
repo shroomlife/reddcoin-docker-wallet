@@ -43,20 +43,20 @@
 		<h4>Accounts</h4>
 		<div class="account balance">
 			<div class="row">
-				<div class="col-7">
+				<div class="col-5">
 					<span>Balance</span>
 				</div>
-				<div class="col-5 text-right">
+				<div class="col-7 text-right">
 					{{balance}}
 				</div>
 			</div>
 		</div>
-		<div class="account" ng-repeat="(key, value) in accounts">
+		<div class="account" ng-repeat="(key, value) in accounts" ng-if="value>0">
 			<div class="row">
-				<div class="col-7">
+				<div class="col-5">
 					<span style="font-style: {{key?'normal':'italic'}}">{{key || "Unnamed"}}</span>
 				</div>
-				<div class="col-5 text-right">
+				<div class="col-7 text-right">
 					{{value}}
 				</div>
 				<div class="col-6 mt-2">
