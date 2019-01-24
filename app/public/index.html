@@ -39,12 +39,12 @@
 					</div>
 
 					<div class="col-12 col-md-4 text-center text-md-right">
-							Market Cap: {{numeral(prices.data.RDD.quote.EUR.market_cap).format('0.0,000')}} &euro;<br />
-							Total Supply: {{numeral(prices.data.RDD.total_supply).format('0.0,000')}} RDD
+							Market Cap: {{numeral(prices.data.RDD.quote.EUR.market_cap).format('0.0,0')}} &euro;<br />
+							Total Supply: {{numeral(prices.data.RDD.total_supply).format('0.0,0')}} RDD
 						</div>
 						<div class="col-12 col-md-4 text-center text-md-right">
 							Volume (24hr/EUR): {{numeral(prices.data.RDD.quote.EUR.volume_24h).format('0.0,0')}} &euro;<br />
-							Price (EUR): {{numeral(prices.data.RDD.quote.EUR.price).format('0.0,000')}} &euro; <span class="number-{{prices.data.RDD.quote.EUR.percent_change_24h>0?'green':'red'}}">({{numeral(prices.data.RDD.quote.EUR.percent_change_24h/100).format('0.00%')}} <i class="fas fa-arrow-{{prices.data.RDD.quote.EUR.percent_change_24h>0?'up':'down'}}"></i>)</span><br />
+							Price (EUR): {{numeral(prices.data.RDD.quote.EUR.price).format('0.0,0')}} &euro; <span class="number-{{prices.data.RDD.quote.EUR.percent_change_24h>0?'green':'red'}}">({{numeral(prices.data.RDD.quote.EUR.percent_change_24h/100).format('0.00%')}} <i class="fas fa-arrow-{{prices.data.RDD.quote.EUR.percent_change_24h>0?'up':'down'}}"></i>)</span><br />
 							<strong>Balance (EUR): {{numeral(prices.data.RDD.quote.EUR.price * balance).format('0.0,0')}} &euro;</strong>
 						</div>
 
@@ -72,9 +72,8 @@
 				</div>
 				<div class="col-7 text-right">
 						<div class="btn-group" role="group">
-							<a href="https://international.bittrex.com/Market/Index?MarketName=BTC-RDD" class="btn btn-primary" style="background-color: #ff0000; border: 1px solid #f30000;" target="_blank"><i class="fas fa-coins"></i> Buy Reddcoins</a>
-							<button type="button" class="btn btn-success"><i class="fas fa-chevron-circle-down"></i> Receive</button>
-							<button type="button" class="btn btn-primary">Send <i class="fas fa-chevron-circle-up"></i></button>
+							<button type="button" class="btn btn-success" ng-click="receive()"><i class="fas fa-chevron-circle-down"></i></button>
+							<button type="button" class="btn btn-primary" ng-click="send()"><i class="fas fa-chevron-circle-up"></i></button>
 						</div>
 					</div>
 			</div>
