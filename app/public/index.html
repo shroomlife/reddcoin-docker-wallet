@@ -134,8 +134,8 @@
 			<tbody>
 				<tr ng-repeat="transaction in transactions | orderBy:'time':true">
 					<td>{{transaction.category}}</td>
-					<td>{{transaction.amount}}</td>
-					<td>{{moment(transaction.time).fromNow()}}</td>
+					<td>{{transaction.amount>0?"+":"-"}}{{transaction.amount}}</td>
+					<td>{{moment(transaction.time * 1000).fromNow()}}</td>
 				</tr>
 			</tbody>
 		</table>
