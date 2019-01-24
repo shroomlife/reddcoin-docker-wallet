@@ -51,7 +51,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="account" ng-repeat="(key, value) in accounts" ng-if="value>0">
+		<div class="account" ng-repeat="(key, value) in accounts" ng-if="value!=0">
 			<div class="row">
 				<div class="col-5">
 					<span style="font-style: {{key?'normal':'italic'}}">{{key || "Unnamed"}}</span>
