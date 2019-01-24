@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="/assets/bootstrap.min.css" />
 	<link rel="stylesheet" href="/assets/fontawesome/css/all.min.css" />
 	<link rel="stylesheet" href="/ext/noty.css" />
-	<link rel="stylesheet" href="/ext/themes/nest.css" />
+	<link rel="stylesheet" href="/ext/themes/mint.css" />
 	<link rel="stylesheet" href="/ext/sweetalert2.min.css" />
 	<link rel="stylesheet" href="/assets/app.css" />
 
@@ -29,8 +29,8 @@
 
 	<div class="container">
 
-		<div ng-switch="blockchain.indexing">
-			<div ng-switch-when="true">
+		<div class="row" ng-if="blockchain.indexing">
+			<div class="col-12">
 				<h4>Indexing</h4>
 				<div class="blockchain mb-3">
 					<div class="progress">
@@ -39,8 +39,19 @@
 				</div>
 			</div>
 		</div>
-
-		<h4>Accounts</h4>
+		
+		<div class="row mb-2">
+			<div class="col-5">
+				<h4>Accounts</h4>
+			</div>
+			<div class="col-7 text-right">
+					<div class="btn-group" role="group">
+						<a href="https://international.bittrex.com/Market/Index?MarketName=BTC-RDD" class="btn btn-primary" style="background-color: #ff0000; border: 1px solid #f30000;" target="_blank"><i class="fas fa-coins"></i> Buy Reddcoins</a>
+						<button type="button" class="btn btn-success"><i class="fas fa-chevron-circle-down"></i> Receive</button>
+						<button type="button" class="btn btn-primary">Send <i class="fas fa-chevron-circle-right"></i></button>
+					</div>
+				</div>
+		</div>
 		<div class="account balance">
 			<div class="row">
 				<div class="col-5">
@@ -144,11 +155,11 @@
 			</table>
 		</div>
 
-		<button type="button" class="btn btn-primary w-100" ng-click="fillTransactions()">load more</button>
+		<button id="fillTransactionsButton" type="button" class="btn btn-primary w-100" ng-click="fillTransactions()">load more</button>
 
 		<div class="row" ng-if="lastUpdated">
 			<div class="col-12 text-monospace text-center">
-				last updated {{lastUpdated.fromNow()}}
+				last updated <span>{{lastUpdated.fromNow()}}</span>
 			</div>
 		</div>
 

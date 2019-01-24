@@ -6,6 +6,7 @@ app.controller('WalletController', function ($scope, $http) {
 
 	$scope.Math = window.Math;
 	$scope.moment = moment;
+	$scope.transactionsCount = 0;
 
 	$scope.load = function () {
 
@@ -20,15 +21,17 @@ app.controller('WalletController', function ($scope, $http) {
 			$scope.balance = data.balance;
 			$scope.accounts = data.accounts;
 			$scope.staking = data.staking;
-			$scope.transactions = data.transactions;
+			$scope.transactions = data.transactions || [];
 			$scope.blockchain = data.blockchain;
+
+			$scope.transactionsCount = data.transactions.length;
 
 			reloadButton.attr("disabled", false);
 			$scope.lastUpdated = moment();
 
 		}).catch(function(error) {
 
-			showNoty("there was an error fetching data from server...")
+			showNoty("there was an error fetching data from server...", "alert");
 
 			$scope.state = 'offline';
 			reloadButton.attr("disabled", false);
@@ -79,15 +82,28 @@ app.controller('WalletController', function ($scope, $http) {
 
 	$scope.fillTransactions = function() {
 
+		$http.get("/api/gettransactions/" + $scope.transactionsCount).then(function (transactions) {
+
+			if(transactions.length) {
+				$scope.transactions.concat(transactions);
+			} else {
+				showNoty("no more transactions", "alert");
+			}
+
+		}).catch(function(error) {
+			showNoty("there was an error fetching data from server...", "alert");
+		});
+
 	};
 
 	$scope.load();
 
 });
 
-function showNoty(text) {
+function showNoty(text, type) {
 	new Noty({
-		"theme": "nest",
+		"theme": "mint",
 		"text": text,
+		"type": type
 	}).show();
 }

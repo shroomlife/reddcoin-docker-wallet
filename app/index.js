@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 
 const express = require("express");
 
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 const reddcoin = require("./reddcoin");
 const app = express();
 
@@ -48,6 +48,19 @@ app.get('/api/home', (req, res) => {
 			"blockchain": blockchain
 		});
 
+	}).catch((error) => {
+		console.log('promise queue error', error);
+		res.sendStatus(503);
+	});
+
+});
+
+app.get('/api/gettransactions/:from', (req, res) => {
+
+	let from = req.params.from;
+
+	reddcoin.cli("listtransactions", true, ['"*"', 10, from]).then((transactions) => {
+		res.json(transactions);
 	}).catch((error) => {
 		console.log('promise queue error', error);
 		res.sendStatus(503);
