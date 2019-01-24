@@ -13,7 +13,6 @@ app.controller('WalletController', function ($scope, $http) {
 
 		$http.get("/api/home").then(function (response) {
 
-			$scope.color = "green";
 			$scope.state = 'online';
 
 			let data = response.data;
@@ -25,11 +24,15 @@ app.controller('WalletController', function ($scope, $http) {
 			$scope.blockchain = data.blockchain;
 
 			reloadButton.attr("disabled", false);
+			$scope.lastUpdated = moment();
 
-		}).catch(function() {
-			$scope.color = "red";
+		}).catch(function(error) {
+
+			showNoty("there was an error fetching data from server...")
+
 			$scope.state = 'offline';
 			reloadButton.attr("disabled", false);
+			
 		});
 
 	};

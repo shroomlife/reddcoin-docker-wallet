@@ -17,7 +17,7 @@
 	<!-- As a link -->
 	<nav class="navbar navbar-light bg-light mb-3">
 		<a class="navbar-brand" href="/">reddcoin wallet</a>
-		<span class="navbar-text number-{{color}}">
+		<span class="navbar-text number-{{state=='online'?'green':'red'}}">
 			<i class="fas fa-wifi"></i> {{state}}
 		</span>
 		<span class="navbar-text">
@@ -28,6 +28,12 @@
 	</nav>
 
 	<div class="container">
+
+		<div class="row">
+			<div class="col-12">
+				<span class="text-monospace text-center">last updated {{lastUpdated.fromNow()}}</span>
+			</div>
+		</div>
 
 		<div ng-switch="blockchain.indexing">
 			<div ng-switch-when="true">
