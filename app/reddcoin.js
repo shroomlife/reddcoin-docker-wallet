@@ -1,4 +1,5 @@
 const { spawn } = require('child_process');
+const request = require('request');
 
 let reddcoind = null;
 
@@ -58,6 +59,31 @@ function execute(command, json = true, args = [], bool = false) {
 
 }
 
+function getPrices() {
+	
+	// 79ed2d2b-dcc7-45fa-8074-f30fc5289bcc
+
+	return new Promise((resolve, reject) => {
+
+		request("https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=RDD&convert=EUR", {
+			"json": true,
+			"headers": {
+				"X-CMC_PRO_API_KEY": "79ed2d2b-dcc7-45fa-8074-f30fc5289bcc"
+			}
+		}, (err, res, body) => {
+
+			if(err) {
+				reject();
+			} else {
+				resolve(body);
+			}
+
+		});
+
+	});
+
+}
+
 function ping() {
 
 	return new Promise((resolve, reject) => {
@@ -78,5 +104,6 @@ function launch() {
 module.exports = {
 	"launch": launch,
 	"cli": execute,
-	"ping": ping
+	"ping": ping,
+	"getPrices": getPrices
 };

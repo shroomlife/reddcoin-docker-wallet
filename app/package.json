@@ -9,7 +9,8 @@
     "express": "4.16.4",
     "moment": "2.23.0",
     "noty": "3.2.0-beta",
-    "sweetalert2": "8.0.1"
+    "sweetalert2": "8.0.1",
+    "request": "2.88.0"
   },
   "scripts": {
     "start": "npm install && node index",

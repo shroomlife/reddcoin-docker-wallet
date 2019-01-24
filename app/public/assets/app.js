@@ -5,6 +5,7 @@ app.controller('WalletController', function ($scope, $http) {
 	let reloadButton = $("#reloadButton");
 
 	$scope.Math = window.Math;
+	$scope.numeral = window.numeral;
 	$scope.moment = moment;
 	$scope.transactionsCount = 0;
 
@@ -23,6 +24,7 @@ app.controller('WalletController', function ($scope, $http) {
 			$scope.staking = data.staking;
 			$scope.transactions = data.transactions || [];
 			$scope.blockchain = data.blockchain;
+			$scope.prices = data.prices;
 
 			$scope.transactionsCount = data.transactions.length;
 

@@ -29,6 +29,33 @@
 
 	<div class="container">
 
+		<div class="row" ng-if="prices">
+
+			<div class="col-12">
+
+				<div class="row reddcoin-price d-flex align-items-center">
+
+					<div class="col-12 col-md-4 text-center text-md-left">
+						<img src="/assets/logo.svg" width="64" height="64" />
+						<a href="https://coinmarketcap.com/currencies/reddcoin/" target="_blank">{{prices.data.RDD.name}} ({{prices.data.RDD.symbol}})</a>
+					</div>
+
+					<div class="col-12 col-md-4 text-center text-md-right">
+							Market Cap: {{numeral(prices.data.RDD.quote.EUR.market_cap).format('0.0,000')}} &euro;<br />
+							Total Supply: {{numeral(prices.data.RDD.total_supply).format('0.0,000')}} RDD
+						</div>
+						<div class="col-12 col-md-4 text-center text-md-right">
+							Volume (24hr/EUR): {{numeral(prices.data.RDD.quote.EUR.volume_24h).format('0.0,0')}} &euro;<br />
+							Price (EUR): {{numeral(prices.data.RDD.quote.EUR.price).format('0.0,000')}} &euro; <span class="number-{{prices.data.RDD.quote.EUR.percent_change_24h>0?'green':'red'}}">({{numeral(prices.data.RDD.quote.EUR.percent_change_24h/100).format('0.00%')}} <i class="fas fa-arrow-{{prices.data.RDD.quote.EUR.percent_change_24h>0?'up':'down'}}"></i>)</span><br />
+							<strong>Balance (EUR): {{prices.data.RDD.quote.EUR.price * balance}} &euro;</strong>
+						</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
 		<div class="row" ng-if="blockchain.indexing">
 			<div class="col-12">
 				<h4>Indexing</h4>
@@ -48,7 +75,7 @@
 					<div class="btn-group" role="group">
 						<a href="https://international.bittrex.com/Market/Index?MarketName=BTC-RDD" class="btn btn-primary" style="background-color: #ff0000; border: 1px solid #f30000;" target="_blank"><i class="fas fa-coins"></i> Buy Reddcoins</a>
 						<button type="button" class="btn btn-success"><i class="fas fa-chevron-circle-down"></i> Receive</button>
-						<button type="button" class="btn btn-primary">Send <i class="fas fa-chevron-circle-right"></i></button>
+						<button type="button" class="btn btn-primary">Send <i class="fas fa-chevron-circle-up"></i></button>
 					</div>
 				</div>
 		</div>
@@ -171,6 +198,7 @@
 	<!-- Angular Material Library -->
 	<script src="/assets/jquery-3.3.1.min.js"></script>
 	<script src="/assets/moment.js"></script>
+	<script src="/assets/numeral.min.js"></script>
 	<script src="/ext/noty.min.js"></script>
 	<script src="/ext/sweetalert2.all.min.js"></script>
 	<script src="/assets/app.js"></script>

@@ -31,10 +31,11 @@ app.get('/api/home', (req, res) => {
 		reddcoin.cli("listaccounts"),
 		reddcoin.cli("getstakinginfo"),
 		reddcoin.cli("listtransactions"),
-		reddcoin.cli("getblockchaininfo")
+		reddcoin.cli("getblockchaininfo"),
+		reddcoin.getPrices()
 	];
 
-	Promise.all(commands).then(([balance, accounts, staking, transactions, blockchain]) => {
+	Promise.all(commands).then(([balance, accounts, staking, transactions, blockchain, prices]) => {
 
 		if(blockchain.verificationprogress < 0.99) {
 			blockchain.indexing = true;
@@ -45,7 +46,8 @@ app.get('/api/home', (req, res) => {
 			"accounts": accounts,
 			"staking": staking,
 			"transactions": transactions,
-			"blockchain": blockchain
+			"blockchain": blockchain,
+			"prices": prices
 		});
 
 	}).catch((error) => {
