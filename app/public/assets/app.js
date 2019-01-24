@@ -7,7 +7,7 @@ app.controller('WalletController', function ($scope, $http) {
 	$scope.Math = window.Math;
 	$scope.moment = moment;
 
-	$scope.reload = function () {
+	$scope.load = function () {
 
 		reloadButton.attr("disabled", true);
 
@@ -32,7 +32,7 @@ app.controller('WalletController', function ($scope, $http) {
 
 			$scope.state = 'offline';
 			reloadButton.attr("disabled", false);
-			
+
 		});
 
 	};
@@ -77,8 +77,7 @@ app.controller('WalletController', function ($scope, $http) {
 
 	};
 
-	$scope.ping();
-	$scope.reload();
+	$scope.load();
 
 });
 
