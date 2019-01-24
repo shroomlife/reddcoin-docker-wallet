@@ -126,16 +126,16 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th scope="col">Account</th>
+					<th scope="col">Type</th>
 					<th scope="col">Amount</th>
 					<th scope="col">Date</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="transaction in transactions">
-					<td>{{transaction.account}}</td>
+				<tr ng-repeat="transaction in transactions | orderBy:'time':true">
+					<td>{{transaction.category}}</td>
 					<td>{{transaction.amount}}</td>
-					<td>{{transaction.time}}</td>
+					<td>{{moment(transaction.time).fromNow()}}</td>
 				</tr>
 			</tbody>
 		</table>
