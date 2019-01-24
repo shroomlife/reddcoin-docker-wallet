@@ -42,3 +42,7 @@ footer {
 .swal2-input[type="password"] {
 	text-align: center;
 }
+
+body {
+	overflow-x: hidden;
+}
