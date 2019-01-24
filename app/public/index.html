@@ -29,12 +29,6 @@
 
 	<div class="container">
 
-		<div class="row">
-			<div class="col-12">
-				<span class="text-monospace text-center">last updated {{lastUpdated.fromNow()}}</span>
-			</div>
-		</div>
-
 		<div ng-switch="blockchain.indexing">
 			<div ng-switch-when="true">
 				<h4>Indexing</h4>
@@ -132,19 +126,34 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th scope="col">Type</th>
+					<th scope="col">Transaction</th>
 					<th scope="col">Amount</th>
-					<th scope="col">Date</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="transaction in transactions | orderBy:'time':true">
-					<td>{{transaction.category}}</td>
+					<td>
+						{{address}} <span class="badge badge-primary">{{transaction.category}}</span>
+						<br />
+						<small title="{{moment(transaction.time * 1000).format('MMMM Do YYYY, h:mm:ss a')}}">{{moment(transaction.time * 1000).fromNow()}}</small>
+					</td>
 					<td>{{transaction.amount>0?"+":"-"}}{{transaction.amount}}</td>
-					<td>{{moment(transaction.time * 1000).fromNow()}}</td>
 				</tr>
 			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="3">
+						<button type="button" class="btn btn-primary" ng-click="fillTransactions()">load more</button>
+					</td>
+				</tr>
+			</tfoot>
 		</table>
+
+		<div class="row">
+			<div class="col-12 text-monospace text-center">
+				last updated {{lastUpdated.fromNow()}}
+			</div>
+		</div>
 
 	</div>
 

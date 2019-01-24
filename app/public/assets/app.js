@@ -77,6 +77,10 @@ app.controller('WalletController', function ($scope, $http) {
 
 	};
 
+	$scope.fillTransactions = function() {
+		
+	};
+
 	$scope.load();
 
 });
