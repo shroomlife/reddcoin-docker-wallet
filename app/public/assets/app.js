@@ -18,7 +18,6 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 
 	$scope.enableNotifications = function() {
 
-		console.log('run: enableNotifications', $scope.notifications);
 		if($scope.notifications === true) {
 			$scope.initNotifications();
 		} else {
