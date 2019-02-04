@@ -40,16 +40,17 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 	$scope.initNotifications = function() {
 
 		console.log('run: initNotifications');
+		console.log($rootScope.registration);
 		$rootScope.registration.pushManager.getSubscription().then(function(subscription) {
 	
 			if(subscription === null) {
 
 				console.log('run: $rootScope.pushManager.subscribe');
-				$rootScope.pushManager.subscribe({
+				$rootScope.registration.pushManager.subscribe({
 					"userVisibleOnly": true
 				}).then(function(pushSubscription) {
 
-					console.log('run: pushSubscription');
+					console.log('run: $rootScope.pushManager.subscribe');
 					$scope.subscriptionId = getIdFromUrl(pushSubscription.endpoint);
 
 					$.ajax({
