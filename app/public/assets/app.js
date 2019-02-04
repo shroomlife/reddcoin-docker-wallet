@@ -63,6 +63,10 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 
 				$http.post("/api/enable-staking", {
 					"password": result.value
+				}, {
+					"headers": {
+						"token": localStorage.getItem("token")
+					}
 				}).then(function (staking) {
 
 					console.log(staking);
@@ -88,7 +92,11 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 	$scope.fillTransactions = function() {
 
 		$scope.loading = true;
-		$http.get("/api/gettransactions/" + $scope.transactions.length).then(function (response) {
+		$http.get("/api/gettransactions/" + $scope.transactions.length, {
+			"headers": {
+				"token": localStorage.getItem("token")
+			}
+		}).then(function (response) {
 
 			let transactions = response.data;
 
