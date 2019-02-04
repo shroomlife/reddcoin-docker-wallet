@@ -70,6 +70,7 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 
 		}).catch(function(error) {
 
+			logout($rootScope);
 			showNoty("there was an error fetching data from server...", "alert");
 			$scope.state = 'offline';
 			$scope.loading = false;
