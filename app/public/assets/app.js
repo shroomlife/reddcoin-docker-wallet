@@ -13,7 +13,9 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 
 		$scope.loading = true;
 
-		$http.get("/api/home", {
+		$http({
+			"url": "/api/home",
+			"method": "GET",
 			"headers": {
 				"token": localStorage.getItem("token")
 			}
@@ -60,10 +62,12 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 		}).then(function (result) {
 
 			if ("value" in result) {
-
-				$http.post("/api/enable-staking", {
-					"password": result.value
-				}, {
+				$http({
+					"url": "/api/enable-staking",
+					"method": "POST",
+					"data": {
+						"password": result.value
+					},
 					"headers": {
 						"token": localStorage.getItem("token")
 					}
@@ -92,7 +96,9 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 	$scope.fillTransactions = function() {
 
 		$scope.loading = true;
-		$http.get("/api/gettransactions/" + $scope.transactions.length, {
+		$http({
+			"url": "/api/gettransactions/" + $scope.transactions.length,
+			"method": "GET",
 			"headers": {
 				"token": localStorage.getItem("token")
 			}
@@ -145,9 +151,13 @@ app.controller('AuthenticationController', function($scope, $http, $rootScope) {
 
 	$scope.sendLogin = function() {
 
-		$http.post("/login", {
-			"username": $scope.username,
-			"password": $scope.password
+		$http({
+			"url": "/login",
+			"method": "POST",
+			"data": {
+				"username": $scope.username,
+				"password": $scope.password
+			}
 		}).then(function(response) {
 
 			let result = response.data;
