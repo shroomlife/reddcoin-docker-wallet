@@ -130,8 +130,7 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 	}, uiRefreshInterval);
 
 	$scope.logout = function() {
-		localStorage.removeItem('token');
-		$rootScope.isAuthenticated = false;
+		logout($rootScope);
 	};
 
 	$rootScope.$watch('isAuthenticated', function() {
@@ -140,7 +139,7 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 		if($rootScope.isAuthenticated === true) {
 			$scope.load();
 		} else {
-			localStorage.removeItem('token');
+			logout($rootScope);
 		}
 
 	});
@@ -183,6 +182,11 @@ app.controller('AuthenticationController', function($scope, $http, $rootScope) {
 	}
 
 });
+
+function logout(root) {
+	localStorage.removeItem('token');
+	root.isAuthenticated = false;
+}
 
 function showNoty(text, type) {
 	new Noty({
