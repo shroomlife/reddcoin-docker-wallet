@@ -126,9 +126,8 @@ appController.get('/api/home', (req, res) => {
 
 		globalCache.updated = moment();
 
-		fs.writeFile(globalCacheFile, JSON.stringify(globalCache), () => {
-			res.json(globalCache.reddcoin);
-		});
+		res.json(globalCache.reddcoin);
+		writeToCache();
 
 	}).catch((error) => {
 		console.log('promise queue error', error);
