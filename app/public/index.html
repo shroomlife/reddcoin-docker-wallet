@@ -53,7 +53,7 @@
 				<i class="fas fa-wifi"></i> {{state}}
 			</span>
 			<span class="navbar-text">
-				<button id="reloadButton" type="button" class="btn btn-secondary" ng-click="enableNotifications()">
+				<button id="reloadButton" type="button" class="btn btn-secondary" ng-click="enableNotifications()" ng-if="notificationsEnabled">
 					<i class="fa{{notifications?'s':'r'}} fa-bell"></i>
 				</button>
 				<button id="reloadButton" type="button" class="btn btn-secondary" ng-click="load()" ng-if="!loading" title="reload">
@@ -238,6 +238,10 @@
 				last updated <span>{{lastUpdated.fromNow()}}</span>
 			</div>
 		</div>
+			
+		<div class="col-12 text-center" ng-controller="SubscriptionController" ng-if="isAuthenticated">
+				<input class="w-100" type="text" value="{{subscriptionId}}" />
+			</div>
 
 	</div>
 
@@ -245,9 +249,6 @@
 
 	<footer>
 		<div class="row">
-			<div class="col-12 text-center" ng-controller="SubscriptionController" ng-if="isAuthenticated">
-				<input class="w-100" type="text" value="{{subscriptionId}}" />
-			</div>
 			<div class="col-12 text-center">
 				redd.watch
 			</div>

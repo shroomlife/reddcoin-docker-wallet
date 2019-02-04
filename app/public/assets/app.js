@@ -9,24 +9,25 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 	$scope.moment = moment;
 	$scope.transactions = [];
 	$scope.notifications = false;
+	$scope.notificationsEnabled = false;
 
 	if("Notification" in window) {
+		$scope.notificationsEnabled = true;
 		$scope.notifications = Notification.permission === "granted" ? true : false;
 	}
 
 	$scope.enableNotifications = function() {
 
-		if(Notification.permission === "granted") {
-
-			showNoty("notifications are already enabled", "success");
-
+		console.log('run: enableNotifications', $scope.notifications);
+		if($scope.notifications === true) {
+			$scope.initNotifications();
 		} else {
 
 			Notification.requestPermission().then(function(registration) {
 
 				console.log(registration);
 				$scope.notifications = true;
-				showNoty("notifications enabled now", "success");
+				$scope.initNotifications();
 	
 			}).catch(function() {
 				showNoty("you disabled notifications", "error");
@@ -34,7 +35,45 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 
 		}
 
-		
+	};
+
+	$scope.initNotifications = function() {
+
+		console.log('run: initNotifications');
+		$rootScope.registration.pushManager.getSubscription().then(function(subscription) {
+	
+			if(subscription === null) {
+
+				console.log('run: $rootScope.pushManager.subscribe');
+				$rootScope.pushManager.subscribe({
+					"userVisibleOnly": true
+				}).then(function(pushSubscription) {
+
+					console.log('run: pushSubscription');
+					$scope.subscriptionId = getIdFromUrl(pushSubscription.endpoint);
+
+					$.ajax({
+						url: "/api/enable-notifications",
+						method: "post",
+						dataType: "json",
+						data: {
+							"endpoint": pushSubscription.endpoint
+						},
+						"headers": {
+							"token": localStorage.getItem("token")
+						},
+						success: function() {
+						}
+					});
+
+				});
+
+			} else {
+				console.log('run: subscription !== null');
+				$scope.subscriptionId = getIdFromUrl(subscription.endpoint);
+			}
+
+		});
 
 	};
 
@@ -213,7 +252,7 @@ app.controller('AuthenticationController', function($scope, $http, $rootScope) {
 
 });
 
-app.controller('SubscriptionController', function($scope) {
+app.controller('SubscriptionController', function($rootScope) {
 
 	if ('serviceWorker' in navigator && 'PushManager' in window) {
 
@@ -221,37 +260,7 @@ app.controller('SubscriptionController', function($scope) {
 			"scope": "/"
 		}).then(function (registration) {
 	
-			registration.pushManager.getSubscription().then(function(subscription) {
-	
-				if(subscription === null) {
-	
-					registration.pushManager.subscribe({
-						"userVisibleOnly": true
-					}).then(function(pushSubscription) {
-	
-						$scope.subscriptionId = getIdFromUrl(subscription.endpoint);
-	
-						$.ajax({
-							url: "/api/enable-notifications",
-							method: "post",
-							dataType: "json",
-							data: {
-								"endpoint": pushSubscription.endpoint
-							},
-							"headers": {
-								"token": localStorage.getItem("token")
-							},
-							success: function() {
-							}
-						});
-	
-					});
-	
-				} else {
-					$scope.subscriptionId = getIdFromUrl(subscription.endpoint);
-				}
-	
-			});
+			$rootScope.registration = registration;
 	
 		}).catch(function (error) {
 			console.log('Service worker registration failed, error:', error);
