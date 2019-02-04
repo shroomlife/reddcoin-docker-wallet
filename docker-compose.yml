@@ -10,7 +10,7 @@ services:
     volumes:
       - "/usr/reddcoin:/root/.reddcoin"
     labels:
-      guru.host: "wallet.shroomlife.de"
+      guru.host: "redd.watch"
 networks:
   default:
     external:
