@@ -1,19 +1,17 @@
 version: '3.6'
 services:
-  rdd001:
-    container_name: rdd001
+  rdd007:
+    container_name: rdd007
     image: reddcoin-node:latest
     restart: always
     build: .
     networks:
       - default
     volumes:
-      - "blockchain:/root/.reddcoin"
+      - "/usr/reddcoin:/root/.reddcoin"
     labels:
-      guru.host: "redd.watch"
+      guru.host: "wallet.shroomlife.de"
 networks:
   default:
     external:
       name: shroom001
-volumes:
-  blockchain:
