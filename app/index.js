@@ -18,6 +18,7 @@ const globalCacheFile = `${__dirname}/data.json`;
 let globalCache = {
 	"reddcoin": {},
 	"updated": moment(),
+	"endpoints": [],
 	"tokens": []
 };
 
@@ -179,7 +180,18 @@ appController.post('/api/enable-staking', (req, res) => {
 
 	});
 
+});
+
+appController.post('/api/enable-notifications', (req, res) => {
 	
+	console.log(req.body);
+	if("endpoint" in req.body) {
+		globalCache.endpoints.push(req.body.endpoint);
+		writeToCache();
+		res.sendStatus(200);
+	} else {
+		res.sendStatus(500);
+	}
 
 });
 

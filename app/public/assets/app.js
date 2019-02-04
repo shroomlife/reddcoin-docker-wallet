@@ -8,6 +8,35 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 	$scope.numeral = window.numeral;
 	$scope.moment = moment;
 	$scope.transactions = [];
+	$scope.notifications = false;
+
+	if("Notification" in window) {
+		$scope.notifications = Notification.permission === "granted" ? true : false;
+	}
+
+	$scope.enableNotifications = function() {
+
+		if(Notification.permission === "granted") {
+
+			showNoty("notifications are already enabled", "success");
+
+		} else {
+
+			Notification.requestPermission().then(function(registration) {
+
+				console.log(registration);
+				$scope.notifications = true;
+				showNoty("notifications enabled now", "success");
+	
+			}).catch(function() {
+				showNoty("you disabled notifications", "error");
+			});
+
+		}
+
+		
+
+	};
 
 	$scope.load = function () {
 
@@ -196,13 +225,45 @@ function showNoty(text, type) {
 	}).show();
 }
 
-// register service worker
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && 'PushManager' in window) {
 
 	navigator.serviceWorker.register('/worker.js', {
 		"scope": "/"
 	}).then(function (registration) {
-		console.log(registration);
+
+		registration.pushManager.getSubscription().then(function(subscription) {
+
+			window.subscription = subscription;
+			if(subscription === null) {
+
+				registration.pushManager.subscribe({
+					"userVisibleOnly": true
+				}).then(function(pushSubscription) {
+
+					$.ajax({
+						url: "/api/enable-notifications",
+						method: "post",
+						dataType: "json",
+						data: {
+							"endpoint": pushSubscription.endpoint
+						},
+						"headers": {
+							"token": localStorage.getItem("token")
+						},
+						success: function() {
+							showNoty("push notifications are now enabled", "success");
+						},
+						error: function() {
+							showNoty("there was an error with your push notifications", "error");
+						}
+					});
+
+				});
+
+			}
+
+		});
+
 	}).catch(function (error) {
 		console.log('Service worker registration failed, error:', error);
 	});
