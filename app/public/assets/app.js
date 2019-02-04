@@ -191,3 +191,16 @@ function showNoty(text, type) {
 		"type": type
 	}).show();
 }
+
+// register service worker
+if ('serviceWorker' in navigator) {
+
+	navigator.serviceWorker.register('/worker.js', {
+		"scope": "/"
+	}).then(function (registration) {
+		console.log(registration);
+	}).catch(function (error) {
+		console.log('Service worker registration failed, error:', error);
+	});
+
+}
