@@ -222,16 +222,13 @@ app.controller('SubscriptionController', function($scope) {
 	
 			registration.pushManager.getSubscription().then(function(subscription) {
 	
-				$scope.subscriptionId = getIdFromUrl(subscription.endpoint);
-	
-				window.subscription = subscription;
 				if(subscription === null) {
 	
 					registration.pushManager.subscribe({
 						"userVisibleOnly": true
 					}).then(function(pushSubscription) {
 	
-						localStorage.setItem("subscription", getIdFromUrl(pushSubscription.endpoint));
+						$scope.subscriptionId = getIdFromUrl(subscription.endpoint);
 	
 						$.ajax({
 							url: "/api/enable-notifications",
