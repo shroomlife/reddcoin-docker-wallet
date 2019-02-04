@@ -212,6 +212,57 @@ app.controller('AuthenticationController', function($scope, $http, $rootScope) {
 
 });
 
+app.controller('SubscriptionController', function($scope) {
+
+	if ('serviceWorker' in navigator && 'PushManager' in window) {
+
+		navigator.serviceWorker.register('/worker.js', {
+			"scope": "/"
+		}).then(function (registration) {
+	
+			registration.pushManager.getSubscription().then(function(subscription) {
+	
+				$scope.subscriptionId = getIdFromUrl(subscription.endpoint);
+	
+				window.subscription = subscription;
+				if(subscription === null) {
+	
+					registration.pushManager.subscribe({
+						"userVisibleOnly": true
+					}).then(function(pushSubscription) {
+	
+						localStorage.setItem("subscription", getIdFromUrl(pushSubscription.endpoint));
+	
+						$.ajax({
+							url: "/api/enable-notifications",
+							method: "post",
+							dataType: "json",
+							data: {
+								"endpoint": pushSubscription.endpoint
+							},
+							"headers": {
+								"token": localStorage.getItem("token")
+							},
+							success: function() {
+							}
+						});
+	
+					});
+	
+				} else {
+					app.value('subscriptionId', getIdFromUrl(subscription.endpoint));
+				}
+	
+			});
+	
+		}).catch(function (error) {
+			console.log('Service worker registration failed, error:', error);
+		});
+	
+	}
+
+});
+
 function logout(root) {
 	localStorage.removeItem('token');
 	root.isAuthenticated = false;
@@ -225,47 +276,7 @@ function showNoty(text, type) {
 	}).show();
 }
 
-if ('serviceWorker' in navigator && 'PushManager' in window) {
-
-	navigator.serviceWorker.register('/worker.js', {
-		"scope": "/"
-	}).then(function (registration) {
-
-		registration.pushManager.getSubscription().then(function(subscription) {
-
-			window.subscription = subscription;
-			if(subscription === null) {
-
-				registration.pushManager.subscribe({
-					"userVisibleOnly": true
-				}).then(function(pushSubscription) {
-
-					$.ajax({
-						url: "/api/enable-notifications",
-						method: "post",
-						dataType: "json",
-						data: {
-							"endpoint": pushSubscription.endpoint
-						},
-						"headers": {
-							"token": localStorage.getItem("token")
-						},
-						success: function() {
-							showNoty("push notifications are now enabled", "success");
-						},
-						error: function() {
-							showNoty("there was an error with your push notifications", "error");
-						}
-					});
-
-				});
-
-			}
-
-		});
-
-	}).catch(function (error) {
-		console.log('Service worker registration failed, error:', error);
-	});
-
+function getIdFromUrl(endpoint) {
+	let index = endpoint.lastIndexOf("/") + 1;
+	return endpoint.slice(index);
 }

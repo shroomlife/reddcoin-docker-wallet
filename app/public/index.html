@@ -241,8 +241,13 @@
 
 	</div>
 
+	
+
 	<footer>
 		<div class="row">
+			<div class="col-12 text-center" ng-controller="SubscriptionController" ng-if="isAuthenticated">
+				<input class="w-100" type="text" value="{{subscriptionId}}" />
+			</div>
 			<div class="col-12 text-center">
 				redd.watch
 			</div>
