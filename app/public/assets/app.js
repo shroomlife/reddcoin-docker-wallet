@@ -247,7 +247,7 @@ app.controller('SubscriptionController', function($scope) {
 					});
 	
 				} else {
-					app.value('subscriptionId', getIdFromUrl(subscription.endpoint));
+					$scope.subscriptionId = getIdFromUrl(subscription.endpoint);
 				}
 	
 			});
