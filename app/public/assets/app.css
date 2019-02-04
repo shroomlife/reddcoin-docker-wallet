@@ -46,3 +46,7 @@ footer {
 body {
 	overflow-x: hidden;
 }
+
+.font-italic {
+	font-style: italic;
+}

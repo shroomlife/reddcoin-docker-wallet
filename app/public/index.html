@@ -12,9 +12,34 @@
 
 </head>
 
-<body ng-controller="WalletController">
+<body>
 
-	<div class="container">
+	<div class="container" ng-controller="AuthenticationController" ng-if="!isAuthenticated">
+
+		
+			<nav class="navbar navbar-light bg-light mb-3">
+					<a class="navbar-brand" href="/">reddcoin wallet</a>
+				</nav>
+
+		<div class="col-12">
+
+			<form action="/login" method="post">
+				<div class="form-group">
+					<label for="inputUsername">username</label>
+					<input type="text" class="form-control" id="inputUsername" ng-model="username" />
+				</div>
+				<div class="form-group">
+					<label for="inputPassword">password</label>
+					<input type="password" class="form-control" id="inputPassword" ng-model="password" />
+				</div>
+				<button type="button" class="btn btn-primary" ng-click="sendLogin()">Login</button>
+			</form>
+
+		</div>
+
+	</div>
+
+	<div id="main" class="container" ng-controller="WalletController" ng-if="isAuthenticated">
 
 		<!-- As a link -->
 		<nav class="navbar navbar-light bg-light mb-3">
@@ -25,6 +50,9 @@
 			<span class="navbar-text">
 				<button id="reloadButton" type="button" class="btn btn-secondary btn-sm" ng-click="load()" ng-if="!loading">
 					<i class="fas fa-redo-alt"></i>
+				</button>
+				<button id="logoutButton" type="button" class="btn btn-secondary btn-sm" ng-click="logout()" ng-if="isAuthenticated">
+					<i class="fas fa-sign-out-alt"></i>
 				</button>
 			</span>
 		</nav>
@@ -90,7 +118,7 @@
 			<div class="account" ng-repeat="(key, value) in accounts" ng-if="value!=0">
 				<div class="row">
 					<div class="col-5">
-						<span style="font-style: {{key?'normal':'italic'}}">{{key || "Unnamed"}}</span>
+						<span class="font-{{key?'normal':'italic'}}">{{key || "Unnamed"}}</span>
 					</div>
 					<div class="col-7 text-right">
 						{{value}} RDD

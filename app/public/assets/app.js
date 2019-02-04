@@ -1,9 +1,8 @@
 var app = angular.module('WalletApp', []);
 
-app.controller('WalletController', function ($scope, $http) {
+app.controller('WalletController', function ($scope, $http, $rootScope) {
 
-	let reloadButton = $("#reloadButton");
-
+	let uiRefreshInterval = 5*1000; // in milliseconds
 	$scope.loading = false;
 	$scope.Math = window.Math;
 	$scope.numeral = window.numeral;
@@ -14,7 +13,11 @@ app.controller('WalletController', function ($scope, $http) {
 
 		$scope.loading = true;
 
-		$http.get("/api/home").then(function (response) {
+		$http.get("/api/home", {
+			"headers": {
+				"token": localStorage.getItem("token")
+			}
+		}).then(function (response) {
 
 			$scope.state = 'online';
 
@@ -37,7 +40,6 @@ app.controller('WalletController', function ($scope, $http) {
 		}).catch(function(error) {
 
 			showNoty("there was an error fetching data from server...", "alert");
-
 			$scope.state = 'offline';
 			$scope.loading = false;
 
@@ -109,11 +111,58 @@ app.controller('WalletController', function ($scope, $http) {
 
 	};
 
-	$scope.load();
-
 	setInterval(function() {
 		$scope.$apply();
-	}, 5000);
+	}, uiRefreshInterval);
+
+	$scope.logout = function() {
+		localStorage.removeItem('token');
+		$rootScope.isAuthenticated = false;
+	};
+
+	$rootScope.$watch('isAuthenticated', function() {
+
+		console.log('BLING', $rootScope.isAuthenticated);
+		if($rootScope.isAuthenticated === true) {
+			$scope.load();
+		} else {
+			localStorage.removeItem('token');
+		}
+
+	});
+
+});
+
+app.controller('AuthenticationController', function($scope, $http, $rootScope) {
+
+	$scope.sendLogin = function() {
+
+		$http.post("/login", {
+			"username": $scope.username,
+			"password": $scope.password
+		}).then(function(response) {
+
+			let result = response.data;
+
+			if(result.authenticated === true) {
+				console.log("authed!");
+				localStorage.setItem("token", result.token);
+				$rootScope.isAuthenticated = true;
+			} else {
+				throw Error();
+			}
+
+		}).catch(function(error) {
+			showNoty("there was an error with your credentials...");
+		});
+		console.log($scope.username);
+		console.log($scope.password);
+	};
+
+	let token = localStorage.getItem("token");
+	if(token) {
+		$rootScope.isAuthenticated = true;
+	}
 
 });
 

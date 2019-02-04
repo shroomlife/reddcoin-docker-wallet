@@ -1,4 +1,7 @@
 const { spawn } = require('child_process');
+const fs = require('fs');
+const uuid = require('uuid/v1');
+const moment = require('moment');
 
 const express = require("express");
 
@@ -10,11 +13,82 @@ let static = express.static(`${__dirname}/public`);
 let notyStatic = express.static(`${__dirname}/node_modules/noty/lib`);
 let swalStatic = express.static(`${__dirname}/node_modules/sweetalert2/dist`);
 
-app.use(static);
-app.use('/ext', notyStatic);
-app.use('/ext', swalStatic);
+const globalCacheFile = `${__dirname}/data.json`;
 
-app.get('/api/ping', (req, res) => {
+let globalCache = {
+	"reddcoin": {},
+	"updated": moment(),
+	"tokens": []
+};
+
+let cacheExists = fs.existsSync(globalCacheFile);
+if(!cacheExists) {
+	fs.writeFileSync(globalCacheFile, JSON.stringify(globalCache));
+}
+
+function writeToCache() {
+	fs.writeFileSync(globalCacheFile, JSON.stringify(globalCache));
+}
+
+function readFromCache() {
+	fs.readFileSync(globalCacheFile, (data) => {
+		globalCache = JSON.parse(data);
+	});
+}
+
+let authController = express.Router();
+
+authController.use(bodyParser.json());
+authController.post('/login', (req, res) => {
+
+	let user = String(req.body.username);
+	let pass = String(req.body.password);
+
+	if(user === "robin" && pass == "kristina") {
+
+		let token = uuid();
+
+		globalCache.tokens.push(token);
+		writeToCache();
+
+		res.json({
+			"authenticated": true,
+			"token": token
+		});
+
+	} else {
+
+		res.json({
+			"authenticated": false
+		});
+
+	}
+
+});
+
+// auth handler
+authController.use((req, res, next) => {
+
+	if("token" in req.headers) {
+
+		let token = req.headers.token;
+
+		if(globalCache.tokens.indexOf(token) !== -1) {
+			console.log(`authed: ${req.url}`);
+			req.isAuthenticated = true;
+		}
+
+		next();
+
+	} else {
+		res.sendStatus(401);
+	}
+
+});
+
+let appController = express.Router();
+
+appController.get('/api/ping', (req, res) => {
 
 	reddcoin.ping().then(() => {
 		res.status(200).send(null);
@@ -24,7 +98,7 @@ app.get('/api/ping', (req, res) => {
 
 });
 
-app.get('/api/home', (req, res) => {
+appController.get('/api/home', (req, res) => {
 
 	let commands = [
 		reddcoin.cli("getbalance", false),
@@ -41,13 +115,19 @@ app.get('/api/home', (req, res) => {
 			blockchain.indexing = true;
 		}
 
-		res.json({
+		globalCache.reddcoin = {
 			"balance": balance,
 			"accounts": accounts,
 			"staking": staking,
 			"transactions": transactions,
 			"blockchain": blockchain,
 			"prices": prices
+		};
+
+		globalCache.updated = moment();
+
+		fs.writeFile(globalCacheFile, JSON.stringify(globalCache), () => {
+			res.json(globalCache.reddcoin);
 		});
 
 	}).catch((error) => {
@@ -57,7 +137,7 @@ app.get('/api/home', (req, res) => {
 
 });
 
-app.get('/api/gettransactions/:from', (req, res) => {
+appController.get('/api/gettransactions/:from', (req, res) => {
 
 	let from = Number(req.params.from);
 
@@ -72,8 +152,8 @@ app.get('/api/gettransactions/:from', (req, res) => {
 
 });
 
-app.use(bodyParser.json());
-app.post('/api/enable-staking', (req, res) => {
+appController.use(bodyParser.json());
+appController.post('/api/enable-staking', (req, res) => {
 
 	let password = req.body.password;
 
@@ -104,8 +184,27 @@ app.post('/api/enable-staking', (req, res) => {
 
 });
 
+app.use(static);
+app.use('/ext', notyStatic);
+app.use('/ext', swalStatic);
+
+// validate request
+app.use(authController);
+
+// check for validated request
+app.use((req, res, next) => {
+
+	if(req.isAuthenticated === true) {
+		next();
+	} else {
+		res.sendStatus(401);
+	}
+
+});
+
+app.use(appController);
+
 app.listen(80, () => {
 	reddcoin.launch();
     console.log('server is listening ...');
 });
-

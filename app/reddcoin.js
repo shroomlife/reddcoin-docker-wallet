@@ -61,8 +61,6 @@ function execute(command, json = true, args = [], bool = false) {
 }
 
 function getPrices() {
-	
-	// 79ed2d2b-dcc7-45fa-8074-f30fc5289bcc
 
 	return new Promise((resolve, reject) => {
 
