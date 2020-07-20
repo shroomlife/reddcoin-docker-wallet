@@ -188,8 +188,6 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 
   navigator.serviceWorker.register('/worker.js', {
     "scope": "/"
-  }).then(function (registration) {
-    console.log(registration)
   }).catch(function (error) {
     console.log('Service worker registration failed, Error:', error);
   });
