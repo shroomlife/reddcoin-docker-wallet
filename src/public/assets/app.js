@@ -16,47 +16,6 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
     $scope.notifications = Notification.permission === "granted" ? true : false;
   }
 
-  $scope.initNotifications = function() {
-
-    console.log('run: initNotifications');
-    console.log($rootScope.registration);
-    $rootScope.registration.pushManager.getSubscription().then(function(subscription) {
-  
-      if(subscription === null) {
-
-        console.log('run: $rootScope.pushManager.subscribe');
-        $rootScope.registration.pushManager.subscribe({
-          "userVisibleOnly": true
-        }).then(function(pushSubscription) {
-
-          console.log('run: $rootScope.pushManager.subscribe');
-          $scope.subscriptionId = getIdFromUrl(pushSubscription.endpoint);
-
-          $.ajax({
-            url: "/api/enable-notifications",
-            method: "post",
-            dataType: "json",
-            data: {
-              "endpoint": pushSubscription.endpoint
-            },
-            "headers": {
-              "token": localStorage.getItem("token")
-            },
-            success: function() {
-            }
-          });
-
-        });
-
-      } else {
-        console.log('run: subscription !== null');
-        $scope.subscriptionId = getIdFromUrl(subscription.endpoint);
-      }
-
-    });
-
-  };
-
   $scope.load = function () {
 
     $scope.loading = true;
@@ -122,8 +81,6 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
           }
         }).then(function (staking) {
 
-          console.log(staking);
-
           if("error" in staking) {
             Swal.fire("staking", "there was an error", "error");
           } else {
@@ -155,7 +112,6 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 
       let transactions = response.data;
 
-      console.log('fillTransactions', transactions);
       if(transactions.length) {
         $scope.transactions = $scope.transactions.concat(transactions);
       }
@@ -167,7 +123,7 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
       $scope.loading = false;
 
     }).catch(function(error) {
-      console.log(error);
+      console.error("ERROR: ", error);
       showNoty("there was an error fetching data from server...", "alert");
       $scope.loading = false;
     });
@@ -184,7 +140,6 @@ app.controller('WalletController', function ($scope, $http, $rootScope) {
 
   $rootScope.$watch('isAuthenticated', function() {
 
-    console.log('BLING', $rootScope.isAuthenticated);
     if($rootScope.isAuthenticated === true) {
       $scope.load();
     } else {
@@ -211,7 +166,6 @@ app.controller('AuthenticationController', function($scope, $http, $rootScope) {
       let result = response.data;
 
       if(result.authenticated === true) {
-        console.log("authed!");
         localStorage.setItem("token", result.token);
         $rootScope.isAuthenticated = true;
       } else {
@@ -221,8 +175,6 @@ app.controller('AuthenticationController', function($scope, $http, $rootScope) {
     }).catch(function(error) {
       showNoty("there was an error with your credentials...");
     });
-    console.log($scope.username);
-    console.log($scope.password);
   };
 
   let token = localStorage.getItem("token");
@@ -243,7 +195,7 @@ app.controller('SubscriptionController', function($rootScope) {
       $rootScope.registration = registration;
   
     }).catch(function (error) {
-      console.log('Service worker registration failed, error:', error);
+      console.log('Service worker registration failed, Error:', error);
     });
   
   }

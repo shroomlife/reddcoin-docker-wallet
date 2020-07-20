@@ -10,10 +10,9 @@ function execute(command, json = true, args = [], bool = false) {
 
     let data = "";
     let execute = spawn('reddcoin-cli', args);
-    console.log('reddcoin-cli', args);
 
     execute.stderr.on('data', (error) => {
-      console.log("ERROR: ", String(error));
+      console.error("ERROR: ", error);
       reject(false);
     });
 

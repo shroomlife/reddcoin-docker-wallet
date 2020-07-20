@@ -75,7 +75,6 @@ authController.use((req, res, next) => {
     let token = req.headers.token;
 
     if(globalCache.tokens.indexOf(token) !== -1) {
-      console.log(`authed: ${req.url}`);
       req.isAuthenticated = true;
     }
 
@@ -131,7 +130,7 @@ appController.get('/api/home', (req, res) => {
     writeToCache();
 
   }).catch((error) => {
-    console.log('promise queue error', error);
+    console.error('ERROR: ', error);
     res.sendStatus(503);
   });
 
@@ -141,12 +140,10 @@ appController.get('/api/gettransactions/:from', (req, res) => {
 
   let from = Number(req.params.from);
 
-  console.log("listtransactions", true, ['*', 10, from]);
-
   reddcoin.cli("listtransactions", true, ['*', 10, from]).then((transactions) => {
     res.json(transactions);
   }).catch((error) => {
-    console.log('promise queue error', error);
+    console.error('ERROR: ', error);
     res.sendStatus(503);
   });
 
@@ -156,11 +153,7 @@ appController.use(bodyParser.json());
 appController.post('/api/enable-staking', (req, res) => {
 
   let password = req.body.password;
-
-  console.log(`password: ${password}`);
   reddcoin.cli("walletpassphrase", false, [password, (60*60*24*30), false], true).then((check) => {
-
-    console.log(check);
 
     if(check) {
 
@@ -184,7 +177,6 @@ appController.post('/api/enable-staking', (req, res) => {
 
 appController.post('/api/enable-notifications', (req, res) => {
   
-  console.log(req.body);
   if("endpoint" in req.body) {
     globalCache.endpoints.push(req.body.endpoint);
     writeToCache();
@@ -217,5 +209,5 @@ app.use(appController);
 
 app.listen(80, () => {
   reddcoin.launch();
-    console.log('server is listening on port 80 ...');
+  console.info('[MAIN] The server is listening on port 80 ...');
 });
