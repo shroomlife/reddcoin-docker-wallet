@@ -11,8 +11,8 @@ const reddcoin = require("./reddcoin");
 const app = express();
 
 let static = express.static(`${__dirname}/public`);
-let notyStatic = express.static(`${__dirname}/node_modules/noty/lib`);
-let swalStatic = express.static(`${__dirname}/node_modules/sweetalert2/dist`);
+let notyStatic = express.static(`../node_modules/noty/lib`);
+let swalStatic = express.static(`../node_modules/sweetalert2/dist`);
 
 const globalCacheFile = `${__dirname}/data.json`;
 
