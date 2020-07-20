@@ -184,23 +184,17 @@ app.controller('AuthenticationController', function($scope, $http, $rootScope) {
 
 });
 
-app.controller('SubscriptionController', function($rootScope) {
+if ('serviceWorker' in navigator && 'PushManager' in window) {
 
-  if ('serviceWorker' in navigator && 'PushManager' in window) {
+  navigator.serviceWorker.register('/worker.js', {
+    "scope": "/"
+  }).then(function (registration) {
+    console.log(registration)
+  }).catch(function (error) {
+    console.log('Service worker registration failed, Error:', error);
+  });
 
-    navigator.serviceWorker.register('/worker.js', {
-      "scope": "/"
-    }).then(function (registration) {
-  
-      $rootScope.registration = registration;
-  
-    }).catch(function (error) {
-      console.log('Service worker registration failed, Error:', error);
-    });
-  
-  }
-
-});
+}
 
 function logout(root) {
   localStorage.removeItem('token');
