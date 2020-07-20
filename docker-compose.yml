@@ -1,19 +1,12 @@
 version: '3.6'
 services:
-  rdd001:
-    container_name: rdd001
-    image: reddcoin-node:latest
+  wallet:
+    container_name: wallet
+    image: shroomlife/reddcoin-docker-wallet:latest
     restart: always
-    build: .
-    networks:
-      - default
     volumes:
       - "blockchain:/root/.reddcoin"
-    labels:
-      guru.host: "redd.watch"
-networks:
-  default:
-    external:
-      name: shroom001
+    environment:
+      - "CMC_API_KEY=<YOUR COINMARKETCAP API KEY>"
 volumes:
   blockchain:
