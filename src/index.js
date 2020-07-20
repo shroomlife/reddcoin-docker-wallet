@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { spawn } = require('child_process');
 const fs = require('fs');
-const uuid = require('uuid/v1');
+const { v1: uuidv4 } = require('uuid');
 const moment = require('moment');
 
 const express = require("express");
