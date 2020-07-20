@@ -2,269 +2,253 @@
 
 <head>
 
-	<title>Reddcoin Wallet</title>
+  <title>Reddcoin Wallet</title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	<link rel="manifest" href="/manifest.json">
-	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 
-	<link rel="stylesheet" href="/assets/bootstrap.min.css" />
-	<link rel="stylesheet" href="/assets/fontawesome/css/all.min.css" />
-	<link rel="stylesheet" href="/ext/noty.css" />
-	<link rel="stylesheet" href="/ext/themes/mint.css" />
-	<link rel="stylesheet" href="/ext/sweetalert2.min.css" />
-	<link rel="stylesheet" href="/assets/app.css" />
+  <link rel="stylesheet" href="/assets/bootstrap.min.css" />
+  <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="/ext/noty.css" />
+  <link rel="stylesheet" href="/ext/themes/mint.css" />
+  <link rel="stylesheet" href="/ext/sweetalert2.min.css" />
+  <link rel="stylesheet" href="/assets/app.css" />
 
 </head>
 
 <body>
 
-	<div class="container" ng-controller="AuthenticationController" ng-if="!isAuthenticated">
+  <div class="container" ng-controller="AuthenticationController" ng-if="!isAuthenticated">
 
-			<nav class="navbar navbar-light bg-light mb-3">
-					<a class="navbar-brand" href="/">Reddcoin Wallet</a>
-				</nav>
+    <nav class="navbar navbar-light bg-light mb-3">
+      <a class="navbar-brand" href="/">Reddcoin Wallet</a>
+    </nav>
 
-		<div class="col-12">
+    <div class="col-12">
 
-			<form action="/login" method="post">
-				<div class="form-group">
-					<label for="inputUsername">username</label>
-					<input type="text" class="form-control" id="inputUsername" ng-model="username" />
-				</div>
-				<div class="form-group">
-					<label for="inputPassword">password</label>
-					<input type="password" class="form-control" id="inputPassword" ng-model="password" />
-				</div>
-				<button type="button" class="btn btn-primary" ng-click="sendLogin()">Login</button>
-			</form>
+      <form action="/login" method="post">
+        <div class="form-group">
+          <label for="inputUsername">Username</label>
+          <input type="text" class="form-control" id="inputUsername" ng-model="username" />
+        </div>
+        <div class="form-group">
+          <label for="inputPassword">Password</label>
+          <input type="password" class="form-control" id="inputPassword" ng-model="password" />
+        </div>
+        <button type="button" class="btn btn-primary" ng-click="sendLogin()">Login</button>
+      </form>
 
-		</div>
+    </div>
 
-	</div>
+  </div>
 
-	<div id="main" class="container" ng-controller="WalletController" ng-if="isAuthenticated">
+  <div id="main" class="container" ng-controller="WalletController" ng-if="isAuthenticated">
 
-		<!-- As a link -->
-		<nav class="navbar navbar-light bg-light mb-3">
-			<a class="navbar-brand" href="/">Reddcoin Wallet</a>
-			<span class="navbar-text number-{{state=='online'?'green':'red'}}">
-				<i class="fas fa-wifi"></i> {{state}}
-			</span>
-			<span class="navbar-text">
-				<button id="reloadButton" type="button" class="btn btn-secondary" ng-click="enableNotifications()">
-					<i class="fa{{notifications?'s':'r'}} fa-bell"></i>
-				</button>
-				<button id="reloadButton" type="button" class="btn btn-secondary" ng-click="load()" ng-if="!loading" title="reload">
-					<i class="fas fa-redo-alt"></i>
-				</button>
-				<button id="logoutButton" type="button" class="btn btn-secondary" ng-click="logout()" ng-if="isAuthenticated" title="logout">
-					<i class="fas fa-sign-out-alt"></i>
-				</button>
-			</span>
-		</nav>
+    <!-- As a link -->
+    <nav class="navbar navbar-light bg-light mb-3">
+      <a class="navbar-brand" href="/">Reddcoin Wallet</a>
+      <span class="navbar-text number-{{state=='online'?'green':'red'}}">
+        <i class="fas fa-wifi"></i> {{state}}
+      </span>
+      <span class="navbar-text">
+        <button id="reloadButton" type="button" class="btn btn-secondary" ng-click="enableNotifications()">
+          <i class="fa{{notifications?'s':'r'}} fa-bell"></i>
+        </button>
+        <button id="reloadButton" type="button" class="btn btn-secondary" ng-click="load()" ng-if="!loading"
+          title="reload">
+          <i class="fas fa-redo-alt"></i>
+        </button>
+        <button id="logoutButton" type="button" class="btn btn-secondary" ng-click="logout()" ng-if="isAuthenticated"
+          title="logout">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </span>
+    </nav>
 
-			<div class="col-12" ng-if="prices">
+    <div class="col-12" ng-if="prices">
 
-				<div class="row reddcoin-price d-flex align-items-center">
+      <div class="row reddcoin-price d-flex align-items-center">
 
-					<div class="col-12 col-md-4 text-center text-md-left">
-						<img src="/assets/logo.svg" width="64" height="64" />
-						<a href="https://coinmarketcap.com/currencies/reddcoin/" target="_blank">{{prices.data.RDD.name}} ({{prices.data.RDD.symbol}})</a>
-					</div>
+        <div class="col-12 col-md-4 text-center text-md-left">
+          <img src="/assets/logo.svg" width="64" height="64" />
+          <a href="https://coinmarketcap.com/currencies/reddcoin/" target="_blank">{{prices.data.RDD.name}}
+            ({{prices.data.RDD.symbol}})</a>
+        </div>
 
-					<div class="col-12 col-md-4 text-center text-md-right">
-							Market Cap: {{numeral(prices.data.RDD.quote.EUR.market_cap).format('0.0,0')}} &euro;<br />
-							Total Supply: {{numeral(prices.data.RDD.total_supply).format('0.0,0')}} RDD
-						</div>
-						<div class="col-12 col-md-4 text-center text-md-right">
-							Volume (24hr/EUR): {{numeral(prices.data.RDD.quote.EUR.volume_24h).format('0.0,0')}} &euro;<br />
-							Price (EUR): {{numeral(prices.data.RDD.quote.EUR.price).format('0.0,0')}} &euro; <span class="number-{{prices.data.RDD.quote.EUR.percent_change_24h>0?'green':'red'}}">({{numeral(prices.data.RDD.quote.EUR.percent_change_24h/100).format('0.00%')}} <i class="fas fa-arrow-{{prices.data.RDD.quote.EUR.percent_change_24h>0?'up':'down'}}"></i>)</span><br />
-							<strong>Balance (EUR): {{numeral(prices.data.RDD.quote.EUR.price * balance).format('0.0,0')}} &euro;</strong>
-						</div>
+        <div class="col-12 col-md-4 text-center text-md-right">
+          Market Cap: {{numeral(prices.data.RDD.quote.EUR.market_cap).format('0.0,0')}} &euro;<br />
+          Total Supply: {{numeral(prices.data.RDD.total_supply).format('0.0,0')}} RDD
+        </div>
+        <div class="col-12 col-md-4 text-center text-md-right">
+          Volume (24hr/EUR): {{numeral(prices.data.RDD.quote.EUR.volume_24h).format('0.0,0')}} &euro;<br />
+          Price (EUR): {{numeral(prices.data.RDD.quote.EUR.price).format('0.0,0')}} &euro; <span
+            class="number-{{prices.data.RDD.quote.EUR.percent_change_24h>0?'green':'red'}}">({{numeral(prices.data.RDD.quote.EUR.percent_change_24h/100).format('0.00%')}}
+            <i class="fas fa-arrow-{{prices.data.RDD.quote.EUR.percent_change_24h>0?'up':'down'}}"></i>)</span><br />
+          <strong>Balance (EUR): {{numeral(prices.data.RDD.quote.EUR.price * balance).format('0.0,0')}} &euro;</strong>
+        </div>
 
-				</div>
+      </div>
 
-			</div>
+    </div>
 
-		<section>
-			<div class="row" ng-if="blockchain.indexing">
-				<div class="col-12">
-					<h4>Indexing</h4>
-					<div class="blockchain mb-3">
-						<div class="progress">
-							<div class="progress-bar" role="progressbar" style="width: {{Math.round((blockchain.verificationprogress * 10000))/100}}%">{{Math.round((blockchain.verificationprogress * 10000))/100}} %</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		
-		<section>
-			<div class="row mb-2">
-				<div class="col-5">
-					<h4>Accounts</h4>
-				</div>
-				<div class="col-7 text-right">
-						<div class="btn-group" role="group">
-							<button type="button" class="btn btn-success" ng-click="receive()"><i class="fas fa-chevron-circle-down"></i></button>
-							<button type="button" class="btn btn-primary" ng-click="send()"><i class="fas fa-chevron-circle-up"></i></button>
-						</div>
-					</div>
-			</div>
-			<div class="account balance">
-				<div class="row">
-					<div class="col-5">
-						<span>Balance</span>
-					</div>
-					<div class="col-7 text-right">
-						{{balance}} RDD
-					</div>
-				</div>
-			</div>
-			<div class="account" ng-repeat="(key, value) in accounts" ng-if="value!=0">
-				<div class="row">
-					<div class="col-5">
-						<span class="font-{{key?'normal':'italic'}}">{{key || "Unnamed"}}</span>
-					</div>
-					<div class="col-7 text-right">
-						{{value}} RDD
-					</div>
-					<div class="col-6 mt-2">
-						<!--<button type="button" class="btn btn-secondary btn-sm">Edit Name</button>-->
-					</div>
-					<div class="col-6 mt-2 text-right">
-						<!--<button type="button" class="btn btn-secondary btn-sm">Move</button>-->
-						<!--<button type="button" class="btn btn-success btn-sm">Receive</button>-->
-						<!--<button type="button" class="btn btn-primary btn-sm">Send</button>-->
-					</div>
-				</div>
-			</div>
-		</section>
+    <section>
+      <div class="row" ng-if="blockchain.indexing">
+        <div class="col-12">
+          <h4>Indexing</h4>
+          <div class="blockchain mb-3">
+            <div class="progress">
+              <div class="progress-bar" role="progressbar"
+                style="width: {{Math.round((blockchain.verificationprogress * 10000))/100}}%">
+                {{Math.round((blockchain.verificationprogress * 10000))/100}} %</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-		<section>
-			<h4>Staking</h4>
-			<div class="account">
-				<div class="row font-weight-bold">
-					<div class="col-7">
-						<span>Staking</span>
-					</div>
-					<div class="col-5 text-right">
-						{{staking.staking ? "yes" : "no"}}
-					</div>
-				</div>
-				<div ng-switch="staking.staking">
+    <section>
+      <div class="row mb-2">
+        <div class="col-5">
+          <h4>Accounts</h4>
+        </div>
+      </div>
+      <div class="account balance">
+        <div class="row">
+          <div class="col-5">
+            <span>Balance</span>
+          </div>
+          <div class="col-7 text-right">
+            {{balance}} RDD
+          </div>
+        </div>
+      </div>
+    </section>
 
-					<div ng-switch-when="true">
-						<div class="row">
-							<div class="col-7">
-								<span>average weight</span>
-							</div>
-							<div class="col-5 text-right">
-								{{staking.averageweight}}
-							</div>
-							<div class="col-7">
-								<span>total weight</span>
-							</div>
-							<div class="col-5 text-right">
-								{{staking.totalweight}}
-							</div>
-							<div class="col-7">
-								<span>net stake weight</span>
-							</div>
-							<div class="col-5 text-right">
-								{{staking.netstakeweight}}
-							</div>
-							<div class="col-7">
-								<span>expected time</span>
-							</div>
-							<div class="col-5 text-right">
-								{{moment().add(staking.expectedtime * 1000).fromNow()}}
-							</div>
-						</div>
-					</div>
+    <section>
+      <h4>Staking</h4>
+      <div class="account">
+        <div class="row font-weight-bold">
+          <div class="col-7">
+            <span>Staking</span>
+          </div>
+          <div class="col-5 text-right">
+            {{staking.staking ? "yes" : "no"}}
+          </div>
+        </div>
+        <div ng-switch="staking.staking">
 
-					<div ng-switch-when="false">
-						<div class="row">
-							<div class="col-12 text-center">
-								<button type="button" class="btn btn-primary btn-sm" ng-click="enableStaking()">enable staking</button>
-							</div>
-						</div>
-					</div>
+          <div ng-switch-when="true">
+            <div class="row">
+              <div class="col-7">
+                <span>average weight</span>
+              </div>
+              <div class="col-5 text-right">
+                {{staking.averageweight}}
+              </div>
+              <div class="col-7">
+                <span>total weight</span>
+              </div>
+              <div class="col-5 text-right">
+                {{staking.totalweight}}
+              </div>
+              <div class="col-7">
+                <span>net stake weight</span>
+              </div>
+              <div class="col-5 text-right">
+                {{staking.netstakeweight}}
+              </div>
+              <div class="col-7">
+                <span>expected time</span>
+              </div>
+              <div class="col-5 text-right">
+                {{moment().add(staking.expectedtime * 1000).fromNow()}}
+              </div>
+            </div>
+          </div>
 
-				</div>
-			</div>
-		</section>
+          <div ng-switch-when="false">
+            <div class="row">
+              <div class="col-12 text-center">
+                <button type="button" class="btn btn-primary btn-sm" ng-click="enableStaking()">enable staking</button>
+              </div>
+            </div>
+          </div>
 
-		<section>
-			<h4>Transactions</h4>
-			<div class="table-responsive">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th scope="col">Transaction</th>
-							<th scope="col" class="text-right">Amount</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="transaction in transactions | orderBy:'time':true">
-							<td ng-if="transaction.address">
-								{{transaction.address}}
-								<span class="badge badge-primary" ng-if="transaction.category=='stake'">{{transaction.category}}</span>
-								<span class="badge badge-danger" ng-if="transaction.category=='send'">{{transaction.category}}</span>
-								<span class="badge badge-success" ng-if="transaction.category=='receive'">{{transaction.category}}</span>
-								<br />
-								<small>{{moment(transaction.time * 1000)}} ({{moment(transaction.time * 1000).fromNow()}})</small>
-							</td>
-							<td ng-if="!transaction.address">
-								{{transaction.account || "Unnamed"}} <i class="fas fa-chevron-right"></i> {{transaction.otheraccount || "Unnamed"}}
-								<span class="badge badge-secondary" ng-if="transaction.category=='move'">{{transaction.category}}</span>
-								<br />
-								<small>{{moment(transaction.time * 1000)}} ({{moment(transaction.time * 1000).fromNow()}})</small>
-							</td>
-							<td class="text-right number-{{transaction.amount>0?'green':'red'}}">{{transaction.amount}} RDD</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+        </div>
+      </div>
+    </section>
 
-			<button type="button" class="btn btn-primary w-100" ng-click="fillTransactions()" ng-if="!allTransactionsShown && transactions.length > 0">load more</button>
+    <section>
+      <h4>Transactions</h4>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Transaction</th>
+              <th scope="col" class="text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="transaction in transactions | orderBy:'time':true">
+              <td ng-if="transaction.address">
+                {{transaction.address}}
+                <span class="badge badge-primary" ng-if="transaction.category=='stake'">{{transaction.category}}</span>
+                <span class="badge badge-danger" ng-if="transaction.category=='send'">{{transaction.category}}</span>
+                <span class="badge badge-success"
+                  ng-if="transaction.category=='receive'">{{transaction.category}}</span>
+                <br />
+                <small>{{moment(transaction.time * 1000)}} ({{moment(transaction.time * 1000).fromNow()}})</small>
+              </td>
+              <td ng-if="!transaction.address">
+                {{transaction.account || "Unnamed"}} <i class="fas fa-chevron-right"></i>
+                {{transaction.otheraccount || "Unnamed"}}
+                <span class="badge badge-secondary" ng-if="transaction.category=='move'">{{transaction.category}}</span>
+                <br />
+                <small>{{moment(transaction.time * 1000)}} ({{moment(transaction.time * 1000).fromNow()}})</small>
+              </td>
+              <td class="text-right number-{{transaction.amount>0?'green':'red'}}">{{transaction.amount}} RDD</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-		</section>
+      <button type="button" class="btn btn-primary w-100" ng-click="fillTransactions()"
+        ng-if="!allTransactionsShown && transactions.length > 0">load more</button>
 
-		<div class="row" ng-if="lastUpdated">
-			<div class="col-12 text-monospace text-center">
-				last updated <span>{{lastUpdated.fromNow()}}</span>
-			</div>
-		</div>
-			
-		<div class="col-12 text-center" ng-controller="SubscriptionController" ng-if="isAuthenticated">
-				<input class="w-100" type="text" value="{{subscriptionId}}" />
-			</div>
+    </section>
 
-	</div>
+    <div class="row" ng-if="lastUpdated">
+      <div class="col-12 text-monospace text-center">
+        last updated <span>{{lastUpdated.fromNow()}}</span>
+      </div>
+    </div>
 
-	
+    <div class="col-12 text-center" ng-controller="SubscriptionController" ng-if="isAuthenticated">
+      <input class="w-100" type="text" value="{{subscriptionId}}" />
+    </div>
 
-	<footer>
-		<div class="row">
-			<div class="col-12 text-center">
-				redd.watch
-			</div>
-		</div>
-	</footer>
+  </div>
 
-	<!-- Angular Material requires Angular.js Libraries -->
-	<script src="/assets/angular.min.js"></script>
 
-	<!-- Angular Material Library -->
-	<script src="/assets/jquery-3.3.1.min.js"></script>
-	<script src="/assets/moment.js"></script>
-	<script src="/assets/numeral.min.js"></script>
-	<script src="/ext/noty.min.js"></script>
-	<script src="/ext/sweetalert2.all.min.js"></script>
-	<script src="/assets/app.js"></script>
+
+  <footer>
+    <div class="row">
+      <div class="col-12 text-center">
+        &copy; 2020 | Reddcoin Wallet
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/angular.min.js"></script>
+
+  <script src="/assets/jquery-3.3.1.min.js"></script>
+  <script src="/assets/moment.js"></script>
+  <script src="/assets/numeral.min.js"></script>
+  <script src="/ext/noty.min.js"></script>
+  <script src="/ext/sweetalert2.all.min.js"></script>
+  <script src="/assets/app.js"></script>
 
 </body>
 
