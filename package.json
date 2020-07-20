@@ -15,8 +15,12 @@
   },
   "scripts": {
     "start": "node src/index",
+    "dev": "nodemon src/index",
     "build": "docker build ."
   },
   "author": "shroomlife",
-  "license": "GPL-3.0-or-later"
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
 }

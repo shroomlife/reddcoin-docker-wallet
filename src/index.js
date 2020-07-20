@@ -1,7 +1,6 @@
 require('dotenv').config();
-const { spawn } = require('child_process');
 const fs = require('fs');
-const { v1: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
 
 const express = require("express");
@@ -11,8 +10,8 @@ const reddcoin = require("./reddcoin");
 const app = express();
 
 let static = express.static(`${__dirname}/public`);
-let notyStatic = express.static(`../node_modules/noty/lib`);
-let swalStatic = express.static(`../node_modules/sweetalert2/dist`);
+let notyStatic = express.static(`./node_modules/noty/lib`);
+let swalStatic = express.static(`./node_modules/sweetalert2/dist`);
 
 const globalCacheFile = `${__dirname}/data.json`;
 
@@ -48,7 +47,7 @@ authController.post('/login', (req, res) => {
 
   if(user === process.env.USERNAME && pass == process.env.PASSWORD) {
 
-    let token = uuid();
+    let token = uuidv4();
 
     globalCache.tokens.push(token);
     writeToCache();
