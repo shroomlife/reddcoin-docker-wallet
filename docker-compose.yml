@@ -8,5 +8,7 @@ services:
       - "blockchain:/root/.reddcoin"
     environment:
       - "CMC_API_KEY=<YOUR COINMARKETCAP API KEY>"
+      - "USERNAME=<YOUR USERNAME>"
+      - "PASSWORD=<YOUR PASSWORD>"
 volumes:
   blockchain:
