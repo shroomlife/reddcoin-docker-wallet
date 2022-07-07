@@ -7,7 +7,7 @@
     "body-parser": "1.19.0",
     "dotenv": "8.2.0",
     "express": "4.17.1",
-    "moment": "2.27.0",
+    "moment": "2.29.4",
     "noty": "3.2.0-beta",
     "request": "2.88.0",
     "sweetalert2": "9.17.0",
